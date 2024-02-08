@@ -13,6 +13,7 @@
     Settings,
     Bug,
     BugOff,
+    PartyPopper,
     Sun,
     Moon,
     Instagram,
@@ -27,6 +28,7 @@
 	import { goto } from "$app/navigation";
 	import { capitalize } from "$lib/helper";
 	import { toggleFullscreen } from "$lib/browser";
+  import { confettiAction } from "svelte-legos";
 
   let loading = false;
   let lastKey = '';
@@ -118,13 +120,21 @@
         {#each commands as command}
         <Command.Item onSelect={command.action}>
             {#if command.icon}
-              <svelte:component this={command.icon} class="mr-2"/>
+              <svelte:component this={command.icon} class="mr-2" />
             {/if}
             {command.name}
         </Command.Item>
         {/each}
       </Command.Group>
     {/each}
+    <Command.Group heading="Fun">
+      <button use:confettiAction class="w-full">
+        <Command.Item>
+            <PartyPopper class="mr-2" />
+            Confetti
+          </Command.Item>
+        </button>
+      </Command.Group>
   </Command.List>
   <Command.Loading class="h-1">
     {#if loading}
