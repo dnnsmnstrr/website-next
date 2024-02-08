@@ -1,3 +1,11 @@
+<script context="module" lang="ts">
+  type CommandData = {
+    name: string,
+    icon?: ConstructorOfATypedSvelteComponent,
+    url?: string,
+    action: () => void
+  }
+</script>
 <script lang="ts">
   import {
     Home,
@@ -12,16 +20,19 @@
   import * as Command from "$lib/components/ui/command";
   import { mode, toggleMode } from 'mode-watcher';
   import { onMount } from "svelte";
-	import { isCommandActive, debug } from "$lib/stores/app";
+	import { isCommandActive, debug, debugLog } from "$lib/stores/app";
 	import Progress from "$lib/components/ui/progress/progress.svelte";
 	import { tweened } from "svelte/motion";
 	import { cubicInOut } from "svelte/easing";
+	import { goto } from "$app/navigation";
+	import { capitalize } from "$lib/helper";
+	import { toggleFullscreen } from "$lib/browser";
 
-  let open = false;
-  $: open = $isCommandActive
   let loading = false;
+  let lastKey = '';
   onMount(() => {
     function handleKeydown(e: KeyboardEvent) {
+      if(e.ctrlKey || e.metaKey) e.preventDefault();
       if ($debug) {
         console.log(e)
       }
@@ -29,9 +40,25 @@
         e.preventDefault();
         $isCommandActive = !$isCommandActive;
       }
+      if (e.key === "f" && (e.metaKey || e.ctrlKey)) {
+        toggleFullscreen()
+      }
+      if (lastKey === 'g' && document.activeElement === document.body) {
+        switch (e.key) {
+          case 'h':
+            goto('/')
+            break;
+          case 's':
+            goto('/settings')
+            break;
+          default:
+            break;
+        }
+      }
       if (e.key === 'Escape' && $isCommandActive) {
         $isCommandActive = false;
       }
+      lastKey = e.key;
     }
     document.addEventListener("keydown", handleKeydown);
     return () => {
@@ -46,41 +73,48 @@
 
   $: $loadingProgress = loading ? 100 : 0;
 
-  const links = [
-    { name: 'About', icon: User, url: '/about' },
-    { name: 'Home', icon: Home, url: '/' },
-    { name: "Instagram", icon: Instagram, url: "https://instagram.com/dnnsmnstrr" },
-  ].map(link => ({ ...link, action: () => {
-    loading = true
+  const enrichLink = (link: { name: string, url: string }): CommandData => ({ ...link, action: () => {
+    // loading = true
+    debugLog(`Opening link to ${link.name} (${link.url})`)
     if (link.url.startsWith('/')) {
-      window.location.href = link.url
+      goto(link.url)
+      // window.location.href = link.url
     } else {
       window.open(link.url)
     }
-  }}));
+  }})
+
+  const links = [
+    { name: "Instagram", icon: Instagram, url: "https://instagram.com/dnnsmnstrr" },
+  ].map(enrichLink);
 
   function toggleDebug() {
     $debug = !$debug
-    console.info("Debug Mode", $debug ? "enabled" : "disabled");
     $isCommandActive = false
   }
-  const commandConfig = {
+
+  $: commandConfig = {
     navigation: [
-    ],
+      { name: 'Home', icon: Home, url: '/' },
+      { name: 'About', icon: User, url: '/about' },
+      { name: 'Settings', icon: Settings, url: '/settings' },
+    ].map(enrichLink),
     links,
     system: [
       { name: 'Toggle Dark Mode', icon: $mode === 'light' ? Sun : Moon, action: toggleMode },
-      { name: ($debug ? 'Disable' : 'Enable') + ' Debug Mode', icon: $debug ? BugOff : Bug, action: toggleDebug }
+      { name: ($debug ? 'Disable' : 'Enable') + ' Debug Mode', icon: $debug ? BugOff : Bug, action: toggleDebug },
     ]
-  }
+  } as Record<string, CommandData[]>
+
+
 </script>
 
-<Command.Dialog bind:open>
+<Command.Dialog bind:open={$isCommandActive}>
   <Command.Input placeholder="Type a command or search..." />
   <Command.List>
     <Command.Empty>No results found.</Command.Empty>
     {#each Object.entries(commandConfig) as [group, commands]}
-      <Command.Group heading={group}>
+      <Command.Group heading={capitalize(group)}>
         {#each commands as command}
         <Command.Item onSelect={command.action}>
             {#if command.icon}

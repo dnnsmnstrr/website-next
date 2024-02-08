@@ -1,42 +1,19 @@
 <script lang="ts">
+	import { closeWindow, isBrowserInFullscreen, toggleFullscreen } from "$lib/browser";
 	import * as Menubar from "$lib/components/ui/menubar";
 	import { WEBSITE_NAME } from "$lib/config";
-	import { debugLog } from "$lib/stores/app";
-
-  function closeWindow() {
-    window.close()
-  }
-  function isVideoInFullscreen() {
-    if (document.fullscreenElement) {
-      return true;
-    }
-    return false;
-  }
-  function toggleFullscreen() {
-    var elem = document.documentElement;
-    if (document.fullscreenEnabled && elem.requestFullscreen) {
-      if (isVideoInFullscreen() && document.exitFullscreen) {
-        debugLog("Exiting fullscreen")
-        document.exitFullscreen()
-      } else {
-        debugLog("Entering fullscreen")
-        elem.requestFullscreen();
-      }
-    } else {
-      console.log("Your browser cannot use fullscreen right now");
-    }
-  }
+	import { toggleMode } from "mode-watcher";
 </script>
 
-<Menubar.Root class="rounded-none border-b border-none px-2 lg:px-4">
+<Menubar.Root class="rounded-none border-b border-none">
 
 	<Menubar.Menu>
 		<Menubar.Trigger class="font-bold">{WEBSITE_NAME}</Menubar.Trigger>
 		<Menubar.Content>
 			<Menubar.Item href="/about">About {WEBSITE_NAME}</Menubar.Item>
 			<Menubar.Separator />
-			<Menubar.Item>
-        Preferences... <Menubar.Shortcut>⌘,</Menubar.Shortcut>
+			<Menubar.Item href="/settings">
+        Settings... <Menubar.Shortcut>⌘,</Menubar.Shortcut>
 			</Menubar.Item>
       <Menubar.Separator />
 			<Menubar.Item on:click={closeWindow}>
@@ -81,7 +58,7 @@
 				Paste <Menubar.Shortcut>⌘V</Menubar.Shortcut>
 			</Menubar.Item>
 			<Menubar.Separator />
-			<Menubar.Item>
+			<Menubar.Item on:click={() => document.execCommand("selectall")}>
 				Select All <Menubar.Shortcut>⌘A</Menubar.Shortcut>
 			</Menubar.Item>
 			<Menubar.Item disabled>
@@ -118,7 +95,10 @@
 				Reload <Menubar.Shortcut>⌘R</Menubar.Shortcut>
 			</Menubar.Item>
 			<Menubar.Separator />
-			<Menubar.Item on:click={toggleFullscreen}>{isVideoInFullscreen() ? 'Exit' : 'Enter'} Full Screen <Menubar.Shortcut>⌘F</Menubar.Shortcut></Menubar.Item>
+			<Menubar.Item on:click={toggleFullscreen}>{isBrowserInFullscreen() ? 'Exit' : 'Enter'} Full Screen <Menubar.Shortcut>⌘F</Menubar.Shortcut></Menubar.Item>
+      <Menubar.Item on:click={toggleMode}>
+				Toggle Dark Mode <Menubar.Shortcut>⌘M</Menubar.Shortcut>
+			</Menubar.Item>
 		</Menubar.Content>
 	</Menubar.Menu>
 	<Menubar.Menu>
