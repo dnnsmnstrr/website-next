@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { closeWindow, isBrowserInFullscreen, toggleFullscreen } from "$lib/browser";
+	import { bookmark, closeWindow, isBrowserInFullscreen, printPage, toggleFullscreen } from "$lib/browser";
 	import * as Menubar from "$lib/components/ui/menubar";
 	import { WEBSITE_NAME } from "$lib/config";
 	import { toggleMode } from "mode-watcher";
@@ -32,7 +32,7 @@
 				Close Window <Menubar.Shortcut>⌘W</Menubar.Shortcut>
 			</Menubar.Item>
 			<Menubar.Separator />
-			<Menubar.Item on:click={() => window.print()}>
+			<Menubar.Item on:click={printPage}>
 				Print... <Menubar.Shortcut>⌘P</Menubar.Shortcut>
 			</Menubar.Item>
 		</Menubar.Content>
@@ -91,7 +91,7 @@
 	<Menubar.Menu>
 		<Menubar.Trigger>View</Menubar.Trigger>
 		<Menubar.Content>
-      <Menubar.Item on:click={window.location.reload}>
+      <Menubar.Item on:click={() => window.location.reload()}>
 				Reload <Menubar.Shortcut>⌘R</Menubar.Shortcut>
 			</Menubar.Item>
 			<Menubar.Separator />
@@ -101,25 +101,17 @@
 			</Menubar.Item>
 		</Menubar.Content>
 	</Menubar.Menu>
+
 	<Menubar.Menu>
 		<Menubar.Trigger class="hidden md:block">Bookmarks</Menubar.Trigger>
 		<Menubar.Content>
-      <Menubar.Sub>
-
-      </Menubar.Sub>
-			<Menubar.Group>
-				<Menubar.Label inset>Switch Account</Menubar.Label>
-				<Menubar.Separator />
-				<Menubar.RadioGroup value="benoit">
-					<Menubar.RadioItem value="andy">Andy</Menubar.RadioItem>
-					<Menubar.RadioItem value="benoit">Benoit</Menubar.RadioItem>
-					<Menubar.RadioItem value="Luis">Luis</Menubar.RadioItem>
-				</Menubar.RadioGroup>
-			</Menubar.Group>
+      <Menubar.Item on:click={() => bookmark(WEBSITE_NAME, window.location.href)}>
+				Bookmark this page <Menubar.Shortcut>⌘D</Menubar.Shortcut>
+			</Menubar.Item>
 			<Menubar.Separator />
-			<Menubar.Item inset>Manage Family...</Menubar.Item>
+			<Menubar.Item>Universe</Menubar.Item>
 			<Menubar.Separator />
-			<Menubar.Item inset>Add Account...</Menubar.Item>
+			<Menubar.Item href="https://muensterer.lol" target="_blank">Current Homepage</Menubar.Item>
 		</Menubar.Content>
 	</Menubar.Menu>
 </Menubar.Root>

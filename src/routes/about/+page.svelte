@@ -14,7 +14,15 @@
 
 	<p>
     This is page was created by {OWNER_NAME}.
-    It is built with <Link href="https://kit.svelte.dev">SvelteKit</Link>
-    and <Link href="https://www.shadcn-svelte.com/">shadcn-svelte</Link>.
+    It is built with <Link href="https://kit.svelte.dev" target="_blank">SvelteKit</Link>
+    and <Link href="https://www.shadcn-svelte.com/" target="_blank">shadcn-svelte</Link>.
 	</p>
+  <br>
+  <p>
+    Some of the projects i'm using:
+	</p>
+  <ul>
+    <li>- <Link href="https://lucide.dev/icons/">Lucide Icons</Link></li>
+    <li>- <Link href="https://sveltelegos.com/">Svelte Legos</Link></li>
+  </ul>
 </div>

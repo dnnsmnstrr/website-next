@@ -41,6 +41,7 @@
 		"lucide-svelte": "^0.321.0",
 		"mode-watcher": "^0.2.0",
 		"svelte-legos": "^0.2.2",
+		"svelte-markdown": "^0.4.1",
 		"svelte-sonner": "^0.3.11",
 		"sveltekit-superforms": "^1.13.4",
 		"tailwind-merge": "^2.2.1",

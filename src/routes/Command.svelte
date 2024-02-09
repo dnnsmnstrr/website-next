@@ -3,7 +3,7 @@
     name: string,
     icon?: ConstructorOfATypedSvelteComponent,
     url?: string,
-    action: () => void
+    action?: () => void
   }
 </script>
 <script lang="ts">
@@ -14,27 +14,36 @@
     Bug,
     BugOff,
     PartyPopper,
+    Pipette,
     Sun,
     Moon,
     Instagram,
+	Palette,
+	ArrowRight,
+	ArrowLeft,
+	Music,
+	Send,
+	Linkedin,
+	Twitter,
   } from "lucide-svelte";
   import * as Command from "$lib/components/ui/command";
   import { mode, toggleMode } from 'mode-watcher';
   import { onMount } from "svelte";
-	import { isCommandActive, debug, debugLog } from "$lib/stores/app";
+	import { isCommandActive, debug, debugLog, primaryColor, backgroundColor, resetColors } from "$lib/stores/app";
 	import Progress from "$lib/components/ui/progress/progress.svelte";
 	import { tweened } from "svelte/motion";
 	import { cubicInOut } from "svelte/easing";
 	import { goto } from "$app/navigation";
-	import { capitalize } from "$lib/helper";
+	import { capitalize, hexToHsl } from "$lib/helper";
 	import { toggleFullscreen } from "$lib/browser";
-  import { confettiAction } from "svelte-legos";
+  import { confettiAction, eyeDropperAction } from "svelte-legos";
+  import { toast } from "svelte-sonner";
 
   let loading = false;
   let lastKey = '';
   onMount(() => {
     function handleKeydown(e: KeyboardEvent) {
-      if(e.ctrlKey || e.metaKey) e.preventDefault();
+      if(e.key !== 'Dead' && (e.ctrlKey || e.metaKey)) e.preventDefault();
       if ($debug) {
         console.log(e)
       }
@@ -42,11 +51,21 @@
         e.preventDefault();
         $isCommandActive = !$isCommandActive;
       }
+      if (e.key === "?" && e.shiftKey) {
+        goto('/help')
+      }
       if (e.key === "f" && (e.metaKey || e.ctrlKey)) {
         toggleFullscreen()
       }
-      if (lastKey === 'g' && document.activeElement === document.body) {
+      const noFocusedElement = document.activeElement === document.body
+      if (lastKey === 'g' && noFocusedElement) {
         switch (e.key) {
+          case 'a':
+            goto('/about')
+            break;
+          case 'i':
+            goto('/imprint')
+            break;
           case 'h':
             goto('/')
             break;
@@ -56,6 +75,9 @@
           default:
             break;
         }
+      }
+      if (lastKey === 'd' && e.key === "m" && noFocusedElement) {
+        toggleMode()
       }
       if (e.key === 'Escape' && $isCommandActive) {
         $isCommandActive = false;
@@ -75,19 +97,31 @@
 
   $: $loadingProgress = loading ? 100 : 0;
 
-  const enrichLink = (link: { name: string, url: string }): CommandData => ({ ...link, action: () => {
-    // loading = true
-    debugLog(`Opening link to ${link.name} (${link.url})`)
-    if (link.url.startsWith('/')) {
-      goto(link.url)
-      // window.location.href = link.url
-    } else {
-      window.open(link.url)
+  const enrichLink = (link: CommandData): CommandData => {
+    const action = link.action || function() {
+      if (!link.url) {
+        return debugLog("Cannot open link for " + link.name);
+      }
+      debugLog(`Opening link to ${link.name} (${link.url})`)
+      if (link.url.startsWith('/')) {
+        goto(link.url)
+        // window.location.href = link.url
+      } else {
+        window.open(link.url)
+      }
+    };
+    return {
+      ...link,
+      action
     }
-  }})
+  }
 
-  const links = [
+  const links: CommandData[] = [
     { name: "Instagram", icon: Instagram, url: "https://instagram.com/dnnsmnstrr" },
+    { name: "Spotify", icon: Music, url: "https://open.spotify.com/user/dennismuensterer" },
+    { name: "Telegram", icon: Send, url: "https://t.me/dnnsmnstrr" },
+    { name: "LinkedIn", icon: Linkedin, url: "https://www.linkedin.com/in/dennismuensterer" },
+    { name: "Twitter/X", icon: Twitter, url: "https://twitter.com/dnnsmnstrr" },
   ].map(enrichLink);
 
   function toggleDebug() {
@@ -100,11 +134,14 @@
       { name: 'Home', icon: Home, url: '/' },
       { name: 'About', icon: User, url: '/about' },
       { name: 'Settings', icon: Settings, url: '/settings' },
+      { name: 'Go Forward', icon: ArrowRight, action: () => window.history.forward() },
+      { name: 'Go Back', icon: ArrowLeft, action: () => window.history.back() },
     ].map(enrichLink),
     links,
     system: [
       { name: 'Toggle Dark Mode', icon: $mode === 'light' ? Sun : Moon, action: toggleMode },
       { name: ($debug ? 'Disable' : 'Enable') + ' Debug Mode', icon: $debug ? BugOff : Bug, action: toggleDebug },
+      { name: 'Reset theme colors', icon: Palette, action: resetColors },
     ]
   } as Record<string, CommandData[]>
 
@@ -127,14 +164,56 @@
         {/each}
       </Command.Group>
     {/each}
+    <Command.Group heading="Settings">
+      <button use:eyeDropperAction={{
+        onDone: (color) => {
+          const message = "Picked color: " + color
+          debugLog(message)
+          $primaryColor = hexToHsl(color)
+          toast.success(message, {
+            description: "Click to copy to clipboard",
+            action: {
+              label: "Copy",
+              onClick: () => navigator.clipboard.writeText(color)
+            }
+          })
+        },
+        onError: console.error
+      }} class="w-full">
+        <Command.Item>
+          <Pipette class="mr-2" />
+          Pick primary color
+        </Command.Item>
+      </button>
+      <button use:eyeDropperAction={{
+        onDone: (color) => {
+          const message = "Picked color: " + color
+          debugLog(message)
+          $backgroundColor = hexToHsl(color)
+          toast.success(message, {
+            description: "Click to copy to clipboard",
+            action: {
+              label: "Copy",
+              onClick: () => navigator.clipboard.writeText(color)
+            }
+          })
+        },
+        onError: console.error
+      }} class="w-full">
+        <Command.Item>
+          <Pipette class="mr-2" />
+          Pick background color
+        </Command.Item>
+      </button>
+    </Command.Group>
     <Command.Group heading="Fun">
       <button use:confettiAction class="w-full">
         <Command.Item>
-            <PartyPopper class="mr-2" />
-            Confetti
-          </Command.Item>
-        </button>
-      </Command.Group>
+          <PartyPopper class="mr-2" />
+          Confetti
+        </Command.Item>
+      </button>
+    </Command.Group>
   </Command.List>
   <Command.Loading class="h-1">
     {#if loading}

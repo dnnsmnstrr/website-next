@@ -4,6 +4,6 @@
   const year = new Date().getFullYear();
 </script>
 
-<footer class="mt-auto flex justify-center">
+<footer class="py-2 flex justify-center">
   <p>© {year} {OWNER_NAME}</p>
 </footer>
