@@ -1,5 +1,6 @@
 <script>
 	import '../app.pcss';
+  import 'emoji-picker-element';
   import { ModeWatcher, mode } from "mode-watcher";
   import { Toaster } from "$lib/components/ui/sonner";
 	import Command from './Command.svelte';

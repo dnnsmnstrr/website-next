@@ -58,13 +58,26 @@
     { key: ['⌘', 'F'], description: 'Fullscreen'},
     { key: ['⌘', 'P'], description: 'Print'},
   ]
+  const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a']
+  let konamiIndex = 0
   onMount(() => {
     function handleKeydown(e: KeyboardEvent) {
-      const ignoredKeys = ['Dead', 'Backspace']
-      if(!ignoredKeys.includes(e.key) && (e.ctrlKey || e.metaKey)) e.preventDefault();
       if ($debug) {
         console.log(e)
       }
+      const ignoredKeys = ['Dead', 'Backspace', 'c', 'v', 'a']
+      if(!ignoredKeys.includes(e.key) && (e.ctrlKey || e.metaKey)) e.preventDefault();
+
+      // konami easter egg https://en.wikipedia.org/wiki/Konami_Code
+      if (e.key === konamiCode[konamiIndex]) {
+        konamiIndex += 1
+      } else {
+        konamiIndex = 0
+      }
+      if (konamiIndex === konamiCode.length) {
+        debugLog('I\'m Gonna Do What\'s Called a Pro Gamer Move!')
+      }
+
       // meta
       if (e.metaKey || e.ctrlKey) {
         switch (e.key) {

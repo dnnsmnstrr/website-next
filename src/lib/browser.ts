@@ -83,3 +83,24 @@ export function isAppleDevice() {
   let isIOS = ['iphone', 'ipad', 'ipod'].indexOf(platform) >= 0;
   return isOSX || isIOS; // Apple device (desktop or iOS)
 }
+
+export function waitForElementToDisplay<T extends Element = Element>(
+	selector: string,
+	callback: (element: T) => void,
+	checkFrequencyInMs = 1000,
+	timeoutInMs = 5000
+) {
+	const startTimeInMs = Date.now();
+	(function loopSearch() {
+		const element = document.querySelector<T>(selector);
+		if (element != null) {
+			callback(element);
+			return;
+		} else {
+			setTimeout(function () {
+				if (timeoutInMs && Date.now() - startTimeInMs > timeoutInMs) return;
+				loopSearch();
+			}, checkFrequencyInMs);
+		}
+	})();
+}

@@ -3,10 +3,16 @@
 </script>
 <script lang="ts">
 	import * as Menubar from "$lib/components/ui/menubar";
-	import { closeWindow, isBrowserInFullscreen, printPage, reloadPage, toggleFullscreen } from "$lib/browser";
+	import * as Dialog from "$lib/components/ui/dialog";
+	import { closeWindow, isBrowserInFullscreen, printPage, reloadPage, toggleFullscreen, waitForElementToDisplay } from "$lib/browser";
 	import { WEBSITE_NAME, links } from "$lib/config";
 	import { toggleMode } from "mode-watcher";
+	import { debugLog } from "$lib/stores/app";
+	import { toast } from "svelte-sonner";
+	import type { EmojiClickEvent } from "emoji-picker-element/shared";
+	import type { Picker } from "emoji-picker-element";
 
+  let showPicker = false
   const bookmarks: Array<BookmarkItem[] | BookmarkItem> = [
     [
       { name: 'About' },
@@ -18,6 +24,22 @@
       { name: 'Mastodon', href: links.mastodon },
     ]}
   ]
+  $: if (showPicker) {
+
+    waitForElementToDisplay<Picker>('emoji-picker', (picker) => {
+      picker.addEventListener('emoji-click', (e: EmojiClickEvent) => {
+        const message = `Selected ${e.detail.emoji.shortcodes ? e.detail.emoji.shortcodes[0] : ''}emoji: ${e.detail.unicode}`
+        debugLog(message, e.detail)
+        toast.success(message, {
+            description: "Click to copy to clipboard",
+            action: {
+              label: "Copy",
+              onClick: () => e.detail.unicode && navigator.clipboard.writeText(e.detail.unicode)
+            }
+          })
+      })
+    }, 500)
+  }
 </script>
 
 <Menubar.Root class="rounded-none border-b border-none">
@@ -79,7 +101,7 @@
 				Deselect All <Menubar.Shortcut>⇧⌘A</Menubar.Shortcut>
 			</Menubar.Item>
 			<Menubar.Separator />
-			<Menubar.Item>
+			<Menubar.Item on:click={() => showPicker = true}>
 				Emoji & Symbols{" "}
 				<Menubar.Shortcut>
 					<svg
@@ -143,3 +165,9 @@
 		</Menubar.Content>
 	</Menubar.Menu>
 </Menubar.Root>
+
+<Dialog.Root open={showPicker} onOpenChange={value => showPicker = value}>
+  <Dialog.Content class="max-w-[340px] p-0" showClose={false}>
+    <emoji-picker></emoji-picker>
+  </Dialog.Content>
+</Dialog.Root>
