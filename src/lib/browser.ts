@@ -1,3 +1,4 @@
+import { browser } from '$app/environment';
 import { debug, debugLog } from '$lib/stores/app';
 
 export function closeWindow() {
@@ -55,4 +56,30 @@ export function bookmark(title: string, url: string) {
 		// ie
 		window.external.AddFavorite(url, title);
 	}
+}
+
+function getPlatform() {
+    if (!browser) {
+      return 'unknown';
+    }
+    // 2022 way of detecting. Note : this userAgentData feature is available only in secure contexts (HTTPS)
+    if (typeof navigator.userAgentData !== 'undefined' && navigator.userAgentData != null) {
+        return navigator.userAgentData.platform;
+    }
+    // Deprecated but still works for most of the browser
+    if (typeof navigator.platform !== 'undefined') {
+        if (typeof navigator.userAgent !== 'undefined' && /android/.test(navigator.userAgent.toLowerCase())) {
+            // android device’s navigator.platform is often set as 'linux', so let’s use userAgent for them
+            return 'android';
+        }
+        return navigator.platform;
+    }
+    return 'unknown';
+}
+
+export function isAppleDevice() {
+  let platform = getPlatform().toLowerCase();
+  let isOSX = /mac/.test(platform);
+  let isIOS = ['iphone', 'ipad', 'ipod'].indexOf(platform) >= 0;
+  return isOSX || isIOS; // Apple device (desktop or iOS)
 }

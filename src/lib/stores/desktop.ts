@@ -1,6 +1,7 @@
 import { browser } from '$app/environment';
 import { randomNumber } from '$lib/helper';
 import { writable } from 'svelte/store';
+import { debugLog } from './app';
 
 const storedPosition =
 	browser && window?.localStorage?.filePosition
@@ -20,9 +21,12 @@ export function initializeFile(fileSize = 50) {
       height: window.innerHeight
     }
     const padding = 20
+    const randomX = randomNumber(padding, windowSize.width - fileSize - padding)
+    const randomY = randomNumber(padding, windowSize.height - fileSize - padding);
+    debugLog("Initializing file to random position", randomX, randomY);
     filePosition.set({
-			x: randomNumber(padding, windowSize.width - fileSize - padding),
-			y: randomNumber(padding, windowSize.height - fileSize - padding)
+			x: randomX,
+			y: randomY,
 		});
   }
 }

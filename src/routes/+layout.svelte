@@ -12,7 +12,7 @@
     $isCommandActive = false
     debugLog('Visiting new page: ' + $page.url.href)
   }
-  $: console.info("Debug Mode", $debug ? "enabled" : "disabled");
+  $: debugLog("Debug Mode", $debug ? "enabled" : "disabled");
   $: if ($mode) {
     debugLog('Theme was set to ' + $mode);
     resetColors();

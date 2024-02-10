@@ -22,8 +22,6 @@
   let DraggableX = 0;
   let DraggableY = 0;
 
-  $: console.log('$filePosition', $filePosition)
-
   $: if (width || height) {
     if (!DraggableX) {
       DraggableX = width / 2 - DraggableWidth / 2

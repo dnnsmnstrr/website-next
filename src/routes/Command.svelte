@@ -1,6 +1,7 @@
 <script context="module" lang="ts">
   type CommandData = {
     name: string,
+    value?: string,
     icon?: ConstructorOfATypedSvelteComponent,
     url?: string,
     action?: () => void
@@ -26,8 +27,11 @@
 	Linkedin,
 	Twitter,
 	Shapes,
+	Keyboard,
+	ScrollText,
   } from "lucide-svelte";
   import * as Command from "$lib/components/ui/command";
+  import * as Dialog from "$lib/components/ui/dialog";
   import { mode, toggleMode } from 'mode-watcher';
   import { onMount } from "svelte";
 	import { isCommandActive, debug, debugLog, primaryColor, backgroundColor, resetColors } from "$lib/stores/app";
@@ -39,29 +43,59 @@
 	import { reloadPage, toggleFullscreen } from "$lib/browser";
   import { confettiAction, eyeDropperAction } from "svelte-legos";
   import { toast } from "svelte-sonner";
+	import List from "$lib/components/typography/List.svelte";
+	import Kbd from "$lib/components/typography/Kbd.svelte";
 
   let loading = false;
+  let showHelp = false;
   let lastKey = '';
+
+  const shortcuts = [
+    { key: '?', description: 'Open this help dialog' },
+    { key: 'esc', description: 'Close open dialog'},
+    { key: ['⌘', ','], description: 'Go to settings'},
+    { key: ['⌘', 'F'], description: 'Fullscreen'},
+    { key: ['⌘', 'P'], description: 'Print'},
+  ]
   onMount(() => {
     function handleKeydown(e: KeyboardEvent) {
-      if(e.key !== 'Dead' && (e.ctrlKey || e.metaKey)) e.preventDefault();
+      const ignoredKeys = ['Dead', 'Backspace']
+      if(!ignoredKeys.includes(e.key) && (e.ctrlKey || e.metaKey)) e.preventDefault();
       if ($debug) {
         console.log(e)
       }
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        $isCommandActive = !$isCommandActive;
+      // meta
+      if (e.metaKey || e.ctrlKey) {
+        switch (e.key) {
+          case ',':
+            goto('/settings')
+            break;
+          case 'f':
+            toggleFullscreen()
+            break;
+          case 'k':
+            $isCommandActive = !$isCommandActive;
+            break;
+          case 'r':
+            reloadPage();
+            break
+          default:
+            break;
+        }
       }
-      if (e.key === "r" && (e.metaKey || e.ctrlKey)) {
-        reloadPage();
-      }
-      if (e.key === "?" && e.shiftKey) {
-        goto('/help')
-      }
-      if (e.key === "f" && (e.metaKey || e.ctrlKey)) {
-        toggleFullscreen()
-      }
+
+      // shortcuts
       const noFocusedElement = document.activeElement === document.body
+      if (e.shiftKey && noFocusedElement) {
+        switch (e.key) {
+          case '?':
+            showHelp = !showHelp
+            debugLog(showHelp ? 'Showing' : 'Closing', 'help dialog...')
+            break;
+          default:
+            break;
+        }
+      }
       if (lastKey === 'g' && noFocusedElement) {
         switch (e.key) {
           case 'a':
@@ -101,7 +135,8 @@
 
   $: $loadingProgress = loading ? 100 : 0;
 
-  const enrichLink = (link: CommandData): CommandData => {
+  const ALIAS_SEPARATOR = '::'
+  const enrichLink = (link: CommandData & { aliases?: string}): CommandData => {
     const action = link.action || function() {
       if (!link.url) {
         return debugLog("Cannot open link for " + link.name);
@@ -114,18 +149,24 @@
         window.open(link.url)
       }
     };
+    let value = link.value || link.name
+    if (link.aliases) {
+      value += (ALIAS_SEPARATOR + link.aliases)
+    }
     return {
       ...link,
-      action
+      action,
+      value
     }
   }
 
   const links: CommandData[] = [
     { name: "Instagram", icon: Instagram, url: "https://instagram.com/dnnsmnstrr" },
-    { name: "Spotify", icon: Music, url: "https://open.spotify.com/user/dennismuensterer" },
-    { name: "Telegram", icon: Send, url: "https://t.me/dnnsmnstrr" },
-    { name: "LinkedIn", icon: Linkedin, url: "https://www.linkedin.com/in/dennismuensterer" },
+    { name: "Spotify", aliases: 'music playlists', icon: Music, url: "https://open.spotify.com/user/dennismuensterer" },
+    { name: "Telegram", aliases: 'messages chats', icon: Send, url: "https://t.me/dnnsmnstrr" },
+    { name: "LinkedIn", aliases: 'work professional', icon: Linkedin, url: "https://www.linkedin.com/in/dennismuensterer" },
     { name: "Twitter/X", icon: Twitter, url: "https://twitter.com/dnnsmnstrr" },
+    { name: "CV", aliases: 'resume curriculum vitae', icon: ScrollText, url: "https://cv.muensterer.tech" },
   ].map(enrichLink);
 
   function toggleDebug() {
@@ -138,30 +179,47 @@
       { name: 'Home', icon: Home, url: '/' },
       { name: 'About', icon: User, url: '/about' },
       { name: 'Playground', icon: Shapes, url: '/playground' },
-      { name: 'Settings', icon: Settings, url: '/settings' },
+      { name: 'Settings', aliases: 'configuration setup', icon: Settings, url: '/settings' },
+      { name: 'Keyboard Shortcuts', aliases: 'keyboard shortcuts help assistance hotkeys', icon: Keyboard, action: () => {showHelp = true; $isCommandActive = false} },
       { name: 'Go Forward', icon: ArrowRight, action: () => window.history.forward() },
       { name: 'Go Back', icon: ArrowLeft, action: () => window.history.back() },
       { name: 'Reload', icon: ArrowLeft, action: reloadPage },
     ].map(enrichLink),
     links,
     system: [
-      { name: 'Toggle Dark Mode', icon: $mode === 'light' ? Sun : Moon, action: toggleMode },
+      { name: 'Toggle Dark Mode', value: 'theme', icon: $mode === 'light' ? Sun : Moon, action: toggleMode },
       { name: ($debug ? 'Disable' : 'Enable') + ' Debug Mode', icon: $debug ? BugOff : Bug, action: toggleDebug },
       { name: 'Reset theme colors', icon: Palette, action: resetColors },
     ]
   } as Record<string, CommandData[]>
 
+  const customFilter = (value: string, search: string) => {
+    const aliasesIndex = value.indexOf(ALIAS_SEPARATOR)
+    const matchIndex = value.indexOf(search)
 
+
+    // matched alias
+    if (aliasesIndex >= 0 && matchIndex > aliasesIndex) {
+      return 0.3
+    }
+    // matched name
+    if (aliasesIndex >= 0 && matchIndex >= 0 && matchIndex < aliasesIndex) {
+      return 0.7
+    }
+    console.log('value, string, rest', value, search, aliasesIndex, matchIndex)
+		if (value.includes(search)) return 0.5;
+		return 0;
+	}
 </script>
 
-<Command.Dialog bind:open={$isCommandActive}>
+<Command.Dialog bind:open={$isCommandActive} loop filter={customFilter} >
   <Command.Input placeholder="Type a command or search..." />
   <Command.List>
     <Command.Empty>No results found.</Command.Empty>
     {#each Object.entries(commandConfig) as [group, commands]}
       <Command.Group heading={capitalize(group)}>
         {#each commands as command}
-        <Command.Item onSelect={command.action}>
+        <Command.Item onSelect={command.action} value={command.value}>
             {#if command.icon}
               <svelte:component this={command.icon} class="mr-2" />
             {/if}
@@ -214,9 +272,15 @@
     </Command.Group>
     <Command.Group heading="Fun">
       <button use:confettiAction class="w-full">
-        <Command.Item>
+        <Command.Item value="confetti::party popper celebrate celebration">
           <PartyPopper class="mr-2" />
           Confetti
+        </Command.Item>
+      </button>
+      <button use:confettiAction class="w-full">
+        <Command.Item value="particles::party popper celebrate celebration">
+          <PartyPopper class="mr-2" />
+          Particles
         </Command.Item>
       </button>
     </Command.Group>
@@ -227,3 +291,34 @@
     {/if}
   </Command.Loading>
 </Command.Dialog>
+
+<Dialog.Root open={showHelp} onOpenChange={(value) => showHelp = value}>
+  <Dialog.Content>
+    <Dialog.Header>
+      <Dialog.Title>Keyboard Shortcuts</Dialog.Title>
+      <Dialog.Description>
+        This action cannot be undone. This will permanently delete your account
+        and remove your data from our servers.
+      </Dialog.Description>
+    </Dialog.Header>
+    <List class="space-y-4">
+      {#each shortcuts as shortcut}
+         <li class="flex">
+          <div class="min-w-20">
+            {#if Array.isArray(shortcut.key)}
+              {#each shortcut.key as singleKey, index}
+                <Kbd>{singleKey}</Kbd>
+                {#if index < shortcut.key.length-1}
+                  <span class="pr-1">+</span>
+                {/if}
+              {/each}
+            {:else}
+              <Kbd>{shortcut.key}</Kbd>
+            {/if}
+          </div>
+          {shortcut.description}
+        </li>
+      {/each}
+    </List>
+  </Dialog.Content>
+</Dialog.Root>

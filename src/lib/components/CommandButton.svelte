@@ -4,6 +4,7 @@
   import {
     Search
   } from "lucide-svelte";
+	import { isAppleDevice } from '$lib/browser';
 </script>
 
 <p class="text-sm ">
@@ -12,7 +13,7 @@
     <kbd
       class="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100"
     >
-      <span class="text-xs">⌘</span>K
+      <span class="text-xs">{isAppleDevice() ? '⌘' : '^'}</span>K
     </kbd>
   </Button>
 </p>

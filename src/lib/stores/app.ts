@@ -24,13 +24,13 @@ export const isCommandActive = writable(false);
 const storedDebugSetting = browser ? window?.localStorage?.debug === 'true' : false;
 export const debug = writable<boolean>(storedDebugSetting);
 debug.subscribe((value) => {
-  if (browser && window?.localStorage?.debug) {
+  if (browser && window?.localStorage) {
 		window.localStorage.debug = String(value);
 	}
 })
 export function debugLog(...args: any[]) {
   const isDebugActive = get(debug)
-  if (isDebugActive) {
+  if (isDebugActive && browser) {
     console.log(...args);
   }
 }
