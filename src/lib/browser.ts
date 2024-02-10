@@ -28,7 +28,15 @@ export function toggleFullscreen() {
 
 export function printPage() {
   debugLog('Opening print dialog');
-  window.print();
+  setTimeout(() => {
+    // give the menu a moment to close
+    window.print();
+  }, 10);
+}
+
+export function reloadPage() {
+  debugLog('Reloading page');
+  window.location.reload();
 }
 
 export function bookmark(title: string, url: string) {

@@ -3,6 +3,7 @@
   import { ExternalLink } from "lucide-svelte";
   export let href: string
   export let target: HTMLAttributeAnchorTarget | null | undefined = undefined
+  export const text: string = ''
 </script>
 
 <a

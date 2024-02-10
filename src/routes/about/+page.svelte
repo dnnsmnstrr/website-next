@@ -1,6 +1,7 @@
 <script>
-	import H1 from "$lib/components/typography/H1.svelte";
+	import Heading from "$lib/components/typography/Heading.svelte";
 	import Link from "$lib/components/typography/Link.svelte";
+	import List from "$lib/components/typography/List.svelte";
 	import { OWNER_NAME } from "$lib/config";
 </script>
 
@@ -9,8 +10,8 @@
 	<meta name="description" content="About this app" />
 </svelte:head>
 
-<div class="text-column">
-  <H1>About</H1>
+<div class="container">
+  <Heading>About</Heading>
 
 	<p>
     This is page was created by {OWNER_NAME}.
@@ -18,11 +19,11 @@
     and <Link href="https://www.shadcn-svelte.com/" target="_blank">shadcn-svelte</Link>.
 	</p>
   <br>
-  <p>
+  <span>
     Some of the projects i'm using:
-	</p>
-  <ul>
-    <li>- <Link href="https://lucide.dev/icons/">Lucide Icons</Link></li>
-    <li>- <Link href="https://sveltelegos.com/">Svelte Legos</Link></li>
-  </ul>
+	</span>
+  <List>
+    <li><Link href="https://lucide.dev/icons/">Lucide Icons</Link></li>
+    <li><Link href="https://sveltelegos.com/">Svelte Legos</Link></li>
+  </List>
 </div>

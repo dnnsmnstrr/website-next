@@ -1,22 +1,26 @@
-# Imprint
+# Imprint / Impressum
 
 Angaben gemäß [§ 5 TMG](https://www.gesetze-im-internet.de/tmg/__5.html)
 
-__Dennis Münsterer__, Fachinformatiker für Anwendungsentwicklung (IHK Wiesbaden, [alte Prüfungsordnung](https://www.ihk.de/wiesbaden/bildung/ausbildung/ausbildungspruefungen/pruefung-neuordnung-it-berufe-55804))
+
+__Dennis Münsterer__, Fachinformatiker für Anwendungsentwicklung
 
 Kontakt:
 
 - Telefon: +49 157 30967248
-- E-Mail: dennismuensterer@gmail.com
+- E-Mail: `dennismuensterer@gmail.com`
 
 ## Social Media
-# Imprint
+
+1. asdf
+2. sdfh
+3. asdfg
 
 Dieses Impressum gilt auch für folgende Social-Media-Präsenzen und Onlineprofile:
-- [Facebook (dennismuensterer)](https://facebook.com/dennismuensterer)
-- [LinkedIn (dennismuensterer)](https://www.linkedin.com/in/dennismuensterer)
-- [Twitter (dnnsmnstrr)](https://twitter.com/dnnsmnstrr)
-- [Instagram (dnnsmnstrr)](https://www.instagram.com/dnnsmnstrr)
+- Facebook ([dennismuensterer](https://facebook.com/dennismuensterer))
+- LinkedIn ([dennismuensterer](https://www.linkedin.com/in/dennismuensterer))
+- Twitter ([dnnsmnstrr](https://twitter.com/dnnsmnstrr))
+- Instagram ([dnnsmnstrr](https://www.instagram.com/dnnsmnstrr))
 - TikTok ([dnnsmnstrr](https://www.tiktok.com/@dnnsmnstrr) & [dennis.makererer](https://www.tiktok.com/@dennis.makerer))
 - [Universe](https://dnnsmnstrr.onuniverse.com/)
 

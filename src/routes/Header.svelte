@@ -11,7 +11,7 @@
 <header class="flex justify-between">
 	<nav class="flex items-center">
     <a href="/">
-      <Globe />
+      <Globe size=20 />
     </a>
 		<Menu />
 	</nav>

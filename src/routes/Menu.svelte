@@ -1,8 +1,19 @@
 <script lang="ts">
-	import { bookmark, closeWindow, isBrowserInFullscreen, printPage, toggleFullscreen } from "$lib/browser";
+	import { bookmark, closeWindow, isBrowserInFullscreen, printPage, reloadPage, toggleFullscreen } from "$lib/browser";
 	import * as Menubar from "$lib/components/ui/menubar";
 	import { WEBSITE_NAME } from "$lib/config";
 	import { toggleMode } from "mode-watcher";
+
+  type BookmarkItem = { name: string, href?: string, sub?: BookmarkItem[] };
+  const bookmarks: Array<BookmarkItem[] | BookmarkItem> = [
+    [
+      { name: 'About' },
+      { name: 'Imprint' }
+    ],
+    { name: 'Social', sub: [
+      { name: 'Instagram', href: 'http://www.instagram.com/dnnsmnstrr' }
+    ]}
+  ]
 </script>
 
 <Menubar.Root class="rounded-none border-b border-none">
@@ -91,7 +102,7 @@
 	<Menubar.Menu>
 		<Menubar.Trigger>View</Menubar.Trigger>
 		<Menubar.Content>
-      <Menubar.Item on:click={() => window.location.reload()}>
+      <Menubar.Item on:click={reloadPage}>
 				Reload <Menubar.Shortcut>⌘R</Menubar.Shortcut>
 			</Menubar.Item>
 			<Menubar.Separator />
@@ -105,11 +116,25 @@
 	<Menubar.Menu>
 		<Menubar.Trigger class="hidden md:block">Bookmarks</Menubar.Trigger>
 		<Menubar.Content>
-      <Menubar.Item on:click={() => bookmark(WEBSITE_NAME, window.location.href)}>
-				Bookmark this page <Menubar.Shortcut>⌘D</Menubar.Shortcut>
-			</Menubar.Item>
-			<Menubar.Separator />
-			<Menubar.Item>Universe</Menubar.Item>
+      {#each bookmarks as bookmark}
+        {#if Array.isArray(bookmark)}
+          {#each bookmark as bookmarkItem}
+            <Menubar.Link {...bookmarkItem} />
+          {/each}
+          <Menubar.Separator />
+        {:else if bookmark.sub}
+          <Menubar.Sub>
+            <Menubar.SubTrigger>{bookmark.name}</Menubar.SubTrigger>
+            <Menubar.SubContent>
+              {#each bookmark.sub as bookmarkItem}
+                <Menubar.Link {...bookmarkItem} />
+              {/each}
+            </Menubar.SubContent>
+          </Menubar.Sub>
+        {:else}
+          <Menubar.Link {...bookmarkItem} />
+        {/if}
+      {/each}
 			<Menubar.Separator />
 			<Menubar.Item href="https://muensterer.lol" target="_blank">Current Homepage</Menubar.Item>
 		</Menubar.Content>

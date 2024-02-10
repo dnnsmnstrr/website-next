@@ -25,6 +25,7 @@
 	Send,
 	Linkedin,
 	Twitter,
+	Shapes,
   } from "lucide-svelte";
   import * as Command from "$lib/components/ui/command";
   import { mode, toggleMode } from 'mode-watcher';
@@ -35,7 +36,7 @@
 	import { cubicInOut } from "svelte/easing";
 	import { goto } from "$app/navigation";
 	import { capitalize, hexToHsl } from "$lib/helper";
-	import { toggleFullscreen } from "$lib/browser";
+	import { reloadPage, toggleFullscreen } from "$lib/browser";
   import { confettiAction, eyeDropperAction } from "svelte-legos";
   import { toast } from "svelte-sonner";
 
@@ -50,6 +51,9 @@
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         $isCommandActive = !$isCommandActive;
+      }
+      if (e.key === "r" && (e.metaKey || e.ctrlKey)) {
+        reloadPage();
       }
       if (e.key === "?" && e.shiftKey) {
         goto('/help')
@@ -133,9 +137,11 @@
     navigation: [
       { name: 'Home', icon: Home, url: '/' },
       { name: 'About', icon: User, url: '/about' },
+      { name: 'Playground', icon: Shapes, url: '/playground' },
       { name: 'Settings', icon: Settings, url: '/settings' },
       { name: 'Go Forward', icon: ArrowRight, action: () => window.history.forward() },
       { name: 'Go Back', icon: ArrowLeft, action: () => window.history.back() },
+      { name: 'Reload', icon: ArrowLeft, action: reloadPage },
     ].map(enrichLink),
     links,
     system: [
