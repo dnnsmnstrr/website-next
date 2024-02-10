@@ -1,6 +1,12 @@
-
+// string
 export const capitalize = (string: string) => (string && string[0].toUpperCase() + string.slice(1)) || '';
 
+// number
+export const randomNumber = (min = 0, max = 100) => {
+	return Math.round(Math.random() * (max - min)) + min;
+};
+
+// color
 export function hexToHsl(hex: string): string {
 	// Remove the hash character, if present
 	hex = hex.replace(/^#/, '');

@@ -10,11 +10,19 @@
   import { elementBoundingStore } from 'svelte-legos';
 	import type { Readable } from 'svelte/store';
 	import Profile from '$lib/components/Profile.svelte';
+	import { onMount } from 'svelte';
+	import { filePosition, initializeFile } from '$lib/stores/desktop';
 
   let element: HTMLElement | null = null;
   let rect = null;
   $: element && (rect = elementBoundingStore(element));
   $: ({ width, height } = $rect || { width: 0, height: 0 });
+
+  onMount(() => {
+    if (!$filePosition.x && !$filePosition.y) {
+      initializeFile()
+    }
+  })
 </script>
 
 <svelte:head>
@@ -25,6 +33,6 @@
 <section class="w-full h-full" bind:this={element}>
   <DraggableWindow {width} {height} class="flex justify-center items-center">
     <Profile />
-    <File name='test' href='/playground' slot="file" />
+    <File name='test.txt' href='/playground' slot="file" />
   </DraggableWindow>
 </section>
