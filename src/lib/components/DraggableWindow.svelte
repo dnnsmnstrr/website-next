@@ -1,5 +1,5 @@
 <script context="module">
-  // import  DragDropTouch  from 'svelte-drag-drop-touch' // for mobile platforms
+  import 'dragdroptouch-bug-fixed' // for mobile platforms
   import { asDraggable } from 'svelte-drag-and-drop-actions'
 </script>
 
@@ -8,30 +8,43 @@
 	import * as Card from '$lib/components/ui/card';
 	import { fade } from 'svelte/transition';
 	import { cn } from '$lib/utils';
+	import { filePosition } from '$lib/stores/desktop';
+	import Draggable from './Draggable.svelte';
 
   const minHeight = 250;
   const minWidth = 200;
-
+  const fileSize = 50;
+  const padding = 20;
   export let width = 0;
   export let height = 0;
-  let DraggableWidth = 400
+  let DraggableWidth = 350
   let DraggableHeight = minHeight
   let DraggableX = 0;
   let DraggableY = 0;
-  let fileX = 0;
-  let fileY = 0;
+
+  $: console.log('$filePosition', $filePosition)
+
   $: if (width || height) {
     if (!DraggableX) {
       DraggableX = width / 2 - DraggableWidth / 2
     }
-    if (DraggableX + DraggableWidth > width) {
-      DraggableWidth = width
+    if ((DraggableX + DraggableWidth + padding) > width) {
+      if (width - DraggableX > minWidth) {
+        DraggableWidth = width - DraggableX - padding
+      } else if (width - DraggableWidth - padding > padding) {
+        DraggableX = width - DraggableWidth - padding
+      }
     }
     if (!DraggableY) {
       DraggableY = height / 3 - DraggableHeight / 2
     }
     if (DraggableY + DraggableHeight > height) {
-      DraggableHeight = height
+      DraggableHeight = height - DraggableHeight
+    }
+
+    //file
+    if (width < ($filePosition.x + fileSize)) {
+      $filePosition.x = width - (fileSize + 20)
     }
   }
   function handleDragChange (x: number, y: number) {
@@ -45,10 +58,10 @@
 
   function handleFileChange (x: number, y: number) {
     if (x) {
-      fileX = x;
+      $filePosition.x = x;
     }
     if (y) {
-      fileY = y;
+      $filePosition.y = y;
     }
   }
 
@@ -89,13 +102,14 @@ style="width:{width}px; height:{height}px;">
       </Card.Root>
     </div>
   {/if}
-  {#if $$slots.file}
+  {#if $$slots.file && ($filePosition.x || $filePosition.y)}
 		<div
+      transition:fade
       class="block absolute right-0 bottom-0 w-8 h-8 cursor-move z-10"
-      style="left:{fileX}px; top:{fileY}px; width:50px; height:50px;"
+      style="left:{$filePosition.x}px; top:{$filePosition.y}px; width:{fileSize}px; height:{fileSize}px;"
       use:asDraggable={{
-        minX:0,minY:0, maxX:width-50,maxY:height-50,
-        onDragStart:{x:fileX,y:fileY}, onDragMove: handleFileChange, onDragEnd: handleFileChange
+        minX:0,minY:0, maxX:width-fileSize,maxY:height-fileSize,
+        onDragStart:{x:$filePosition.x,y:$filePosition.y}, onDragMove: handleFileChange, onDragEnd: handleFileChange
       }}
     >
       <slot name="file" />

@@ -132,7 +132,7 @@
             </Menubar.SubContent>
           </Menubar.Sub>
         {:else}
-          <Menubar.Link {...bookmarkItem} />
+          <Menubar.Link {...bookmark} />
         {/if}
       {/each}
 			<Menubar.Separator />
