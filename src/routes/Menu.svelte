@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { bookmark, closeWindow, isBrowserInFullscreen, printPage, reloadPage, toggleFullscreen } from "$lib/browser";
 	import * as Menubar from "$lib/components/ui/menubar";
-	import { WEBSITE_NAME } from "$lib/config";
+	import { WEBSITE_NAME, links } from "$lib/config";
 	import { toggleMode } from "mode-watcher";
 
   type BookmarkItem = { name: string, href?: string, sub?: BookmarkItem[] };
@@ -11,13 +11,14 @@
       { name: 'Imprint' }
     ],
     { name: 'Social', sub: [
-      { name: 'Instagram', href: 'http://www.instagram.com/dnnsmnstrr' }
+      { name: 'Instagram', href: links.instagram },
+      { name: 'Twitter', href: links.twitter },
+      { name: 'Mastodon', href: links.mastodon },
     ]}
   ]
 </script>
 
 <Menubar.Root class="rounded-none border-b border-none">
-
 	<Menubar.Menu>
 		<Menubar.Trigger class="font-bold">{WEBSITE_NAME}</Menubar.Trigger>
 		<Menubar.Content>
