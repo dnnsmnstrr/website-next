@@ -10,7 +10,7 @@ export const defaultColors = {
 		background: '0 0% 100%'
 	},
 	dark: {
-		primary: '210 40% 98%',
-		background: '222.2 84% 4.9%'
+		primary: '0 0% 98%',
+		background: '240 10% 3.9%'
 	}
 };

@@ -26,8 +26,8 @@
 <Toaster />
 <Command />
 
-<div class="w-full h-full flex flex-col flex-nowrap flex-grow">
-  <div class="w-fixed w-full flex-shrink flex-grow-0 py-4 px-16 print:hidden">
+<div class="w-full h-full flex flex-col flex-grow">
+  <div class="w-fixed w-full py-4 px-16 print:hidden">
     <div class="sticky top-0 w-full h-full">
       <Header />
     </div>

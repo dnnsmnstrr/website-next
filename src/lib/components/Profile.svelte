@@ -5,7 +5,7 @@
   import Typewriter from "svelte-typewriter";
 </script>
 
-  <Card.Header class="flex flex-row items-center gap-5">
+  <Card.Header class="flex flex-row items-center gap-5 flex-wrap">
     <Avatar.Root class="h-16 w-16">
       <Avatar.Image src="https://github.com/dnnsmnstrr.png" alt="@dnnsmnstrr" />
       <Avatar.Fallback>DM</Avatar.Fallback>

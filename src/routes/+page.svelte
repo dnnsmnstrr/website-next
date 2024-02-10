@@ -25,5 +25,6 @@
 <section class="w-full h-full" bind:this={element}>
   <DraggableWindow {width} {height} class="flex justify-center items-center">
     <Profile />
+    <File name='test' href='/playground' slot="file" />
   </DraggableWindow>
 </section>
