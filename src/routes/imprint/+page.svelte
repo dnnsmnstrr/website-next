@@ -10,7 +10,7 @@
 	<title>Imprint</title>
 </svelte:head>
 
-<div class="container overflow-y-scroll">
+<div class="container overflow-y-scroll pb-8">
   <SvelteMarkdown source={imprintText} renderers={{
     heading: Heading,
     link: Link,

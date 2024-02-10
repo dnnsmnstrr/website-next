@@ -16,7 +16,7 @@
   width:{ArenaWidth}px; height:{ArenaHeight}px; margin:20px;
   border:dotted 1px black; border-radius:4px;
 ">
-  <div style="
+  <div on:mousedown|stopPropagation={console.log} style="
     display:block; position:absolute;
     left:{DraggableX}px; top:{DraggableY}px; width:{DraggableWidth}px; height:{DraggableHeight}px;
     background:forestgreen; color:white; line-height:30px; text-align:center; cursor:move;

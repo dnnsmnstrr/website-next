@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { HTMLAttributeAnchorTarget } from "svelte/elements";
   import { ExternalLink } from "lucide-svelte";
-  export let href: string
+  export let href: string | undefined
   export let target: HTMLAttributeAnchorTarget | null | undefined = undefined
   export const text: string = ''
 </script>

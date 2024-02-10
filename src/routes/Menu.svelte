@@ -1,10 +1,12 @@
+<script context="module" lang="ts">
+  export type BookmarkItem = { name: string, href?: string, sub?: BookmarkItem[] };
+</script>
 <script lang="ts">
-	import { bookmark, closeWindow, isBrowserInFullscreen, printPage, reloadPage, toggleFullscreen } from "$lib/browser";
 	import * as Menubar from "$lib/components/ui/menubar";
+	import { closeWindow, isBrowserInFullscreen, printPage, reloadPage, toggleFullscreen } from "$lib/browser";
 	import { WEBSITE_NAME, links } from "$lib/config";
 	import { toggleMode } from "mode-watcher";
 
-  type BookmarkItem = { name: string, href?: string, sub?: BookmarkItem[] };
   const bookmarks: Array<BookmarkItem[] | BookmarkItem> = [
     [
       { name: 'About' },

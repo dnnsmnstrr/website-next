@@ -9,7 +9,6 @@
 	import { fade } from 'svelte/transition';
 	import { cn } from '$lib/utils';
 	import { filePosition } from '$lib/stores/desktop';
-	import Draggable from './Draggable.svelte';
 
   const minHeight = 250;
   const minWidth = 200;
@@ -26,9 +25,9 @@
     if (!DraggableX) {
       DraggableX = width / 2 - DraggableWidth / 2
     }
-    if ((DraggableX + DraggableWidth + padding) > width) {
+    if ((DraggableX + DraggableWidth) > width) {
       if (width - DraggableX > minWidth) {
-        DraggableWidth = width - DraggableX - padding
+        DraggableWidth = width - DraggableX
       } else if (width - DraggableWidth - padding > padding) {
         DraggableX = width - DraggableWidth - padding
       }

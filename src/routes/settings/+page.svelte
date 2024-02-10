@@ -4,15 +4,17 @@
 	import SettingsForm from "./SettingsForm.svelte";
 </script>
 
-<Heading>Settings</Heading>
+<div class="container">
+  <Heading>Settings</Heading>
 
-<Card.Root>
-  <Card.Header>
-    <Card.Title>
-      Look & Feel
-    </Card.Title>
-  </Card.Header>
-  <Card.Content>
-    <SettingsForm />
-  </Card.Content>
-</Card.Root>
+  <Card.Root>
+    <Card.Header>
+      <Card.Title>
+        Look & Feel
+      </Card.Title>
+    </Card.Header>
+    <Card.Content>
+      <SettingsForm />
+    </Card.Content>
+  </Card.Root>
+</div>

@@ -1,13 +1,89 @@
 <script lang="ts">
+  import * as Card from "$lib/components/ui/card/index.js";
+  import * as Carousel from "$lib/components/ui/carousel/index.js";
 	import Draggable from "$lib/components/Draggable.svelte";
 	import DraggableContainer from "$lib/components/DraggableContainer.svelte";
   import Counter from "../Counter.svelte";
+	import Heading from "$lib/components/typography/Heading.svelte";
+	import List from "$lib/components/typography/List.svelte";
+	import Link from "$lib/components/typography/Link.svelte";
 
+  const basis = 'basis-full md:basis-1/2 lg:basis-1/3'
 </script>
 
 
-<Counter />
 
-<Draggable />
+<Carousel.Root
+  class="w-full"
+  opts={{
+    align: "start",
+    loop: true,
+  }}
+>
+  <Carousel.Content>
+    <Carousel.Item class={basis}>
+      <div class="p-2 sm:p-0.5">
+        <Card.Root>
+          <Card.Header>
+            <Card.Title>Typography</Card.Title>
+            <Card.Description>
+              Some custom typography components I created based on
+              <Link href="https://www.shadcn-svelte.com/docs/typography" target="_blank">shadcn-svelte</Link>
+            </Card.Description>
+          </Card.Header>
+          <Card.Content
+            class="flex flex-col aspect-square items-center justify-center p-6"
+          >
+            <Heading>Heading</Heading>
+            <List class="w-full">
+              <li>unordered</li>
+              <li>list</li>
+            </List>
+            <List ordered class="w-full">
+              <li>ordered</li>
+              <li>list</li>
+            </List>
 
-<DraggableContainer>asdf</DraggableContainer>
+            <Link href="https://www.shadcn-svelte.com/docs/typography" target="_blank">External link</Link>
+          </Card.Content>
+        </Card.Root>
+      </div>
+    </Carousel.Item>
+
+    <Carousel.Item class={basis}>
+      <div class="p-2 sm:p-0.5">
+        <Card.Root>
+          <Card.Header>
+            <Card.Title>Draggable Container</Card.Title>
+            <Card.Description>
+              Precursor to the current "Desktop" on the <a href="/">home</a> page.
+              Uses <Link href="https://github.com/rozek/svelte-drag-and-drop-actions">svelte-drag-and-drop-actions</Link>
+            </Card.Description>
+          </Card.Header>
+          <Card.Content
+            class="flex aspect-square items-center justify-center p-6"
+          >
+            <Draggable />
+          </Card.Content>
+        </Card.Root>
+      </div>
+    </Carousel.Item>
+
+    <Carousel.Item class="{basis} h-full">
+      <div class="p-2 sm:p-0.5 h-full">
+        <Card.Root>
+          <Card.Header>
+            <Card.Title>Svelte Counter Component</Card.Title>
+          </Card.Header>
+          <Card.Content
+            class="flex aspect-square items-center justify-center p-6"
+          >
+            <Counter />
+          </Card.Content>
+        </Card.Root>
+      </div>
+    </Carousel.Item>
+  </Carousel.Content>
+  <Carousel.Previous />
+  <Carousel.Next />
+</Carousel.Root>

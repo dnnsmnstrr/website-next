@@ -7,7 +7,7 @@
 <svelte:element
   this={ordered ? 'ol' : 'ul'}
   {...$$restProps}
-  class={cn("my-6 ml-6 {ordered ? 'list-decimal' : 'list-disc'} [&>li]:mt-2", $$props.class)}
+  class={cn("my-6 ml-6 list-disc [&>li]:mt-2", $$props.class, ordered ? 'list-decimal' : 'list-disc')}
 >
   <slot />
 </svelte:element>

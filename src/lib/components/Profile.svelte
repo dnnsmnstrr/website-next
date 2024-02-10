@@ -12,7 +12,7 @@
     </Avatar.Root>
     <div class="flex flex-col gap-2">
       <Card.Title>{OWNER_NAME}</Card.Title>
-      <Card.Description class="h-4">
+      <Card.Description class="h-6">
         <Typewriter mode="loopRandom" interval={100} delay={0} cursor={false}>
           {#each descriptions as description}
             {#if typeof description === 'object'}

@@ -45,6 +45,7 @@
   import { toast } from "svelte-sonner";
 	import List from "$lib/components/typography/List.svelte";
 	import Kbd from "$lib/components/typography/Kbd.svelte";
+	import { page } from "$app/stores";
 
   let loading = false;
   let showHelp = false;
@@ -184,47 +185,28 @@
       { name: 'Go Forward', icon: ArrowRight, action: () => window.history.forward() },
       { name: 'Go Back', icon: ArrowLeft, action: () => window.history.back() },
       { name: 'Reload', icon: ArrowLeft, action: reloadPage },
-    ].map(enrichLink),
+    ].filter(link => $page.url.pathname !== link.url).map(enrichLink),
     links,
     system: [
       { name: 'Toggle Dark Mode', value: 'theme', icon: $mode === 'light' ? Sun : Moon, action: toggleMode },
       { name: ($debug ? 'Disable' : 'Enable') + ' Debug Mode', icon: $debug ? BugOff : Bug, action: toggleDebug },
-      { name: 'Reset theme colors', icon: Palette, action: resetColors },
     ]
   } as Record<string, CommandData[]>
-
-  const customFilter = (value: string, search: string) => {
-    const aliasesIndex = value.indexOf(ALIAS_SEPARATOR)
-    const matchIndex = value.indexOf(search)
-
-
-    // matched alias
-    if (aliasesIndex >= 0 && matchIndex > aliasesIndex) {
-      return 0.3
-    }
-    // matched name
-    if (aliasesIndex >= 0 && matchIndex >= 0 && matchIndex < aliasesIndex) {
-      return 0.7
-    }
-    console.log('value, string, rest', value, search, aliasesIndex, matchIndex)
-		if (value.includes(search)) return 0.5;
-		return 0;
-	}
 </script>
 
-<Command.Dialog bind:open={$isCommandActive} loop filter={customFilter} >
+<Command.Dialog bind:open={$isCommandActive} >
   <Command.Input placeholder="Type a command or search..." />
   <Command.List>
     <Command.Empty>No results found.</Command.Empty>
     {#each Object.entries(commandConfig) as [group, commands]}
       <Command.Group heading={capitalize(group)}>
         {#each commands as command}
-        <Command.Item onSelect={command.action} value={command.value}>
-            {#if command.icon}
-              <svelte:component this={command.icon} class="mr-2" />
-            {/if}
-            {command.name}
-        </Command.Item>
+          <Command.Item onSelect={command.action} value={command.value}>
+              {#if command.icon}
+                <svelte:component this={command.icon} class="mr-2" />
+              {/if}
+              {command.name}
+          </Command.Item>
         {/each}
       </Command.Group>
     {/each}
@@ -269,18 +251,16 @@
           Pick background color
         </Command.Item>
       </button>
+      <Command.Item>
+        <Palette class="mr-2" />
+        Reset theme colors
+      </Command.Item>
     </Command.Group>
     <Command.Group heading="Fun">
       <button use:confettiAction class="w-full">
         <Command.Item value="confetti::party popper celebrate celebration">
           <PartyPopper class="mr-2" />
           Confetti
-        </Command.Item>
-      </button>
-      <button use:confettiAction class="w-full">
-        <Command.Item value="particles::party popper celebrate celebration">
-          <PartyPopper class="mr-2" />
-          Particles
         </Command.Item>
       </button>
     </Command.Group>
@@ -297,8 +277,7 @@
     <Dialog.Header>
       <Dialog.Title>Keyboard Shortcuts</Dialog.Title>
       <Dialog.Description>
-        This action cannot be undone. This will permanently delete your account
-        and remove your data from our servers.
+        There are many different shortcuts and features to explore on this page. Here is a selection of the most obvious ones:
       </Dialog.Description>
     </Dialog.Header>
     <List class="space-y-4">

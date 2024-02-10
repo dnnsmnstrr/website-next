@@ -11,10 +11,7 @@
   const batteryInfo = battery();
   $: (
     {
-      isSupported,
       charging,
-      chargingTime,
-      dischargingTime,
       level
     } = $batteryInfo
   )
