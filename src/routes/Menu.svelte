@@ -9,8 +9,9 @@
 	import { toggleMode } from "mode-watcher";
 	import { debugLog } from "$lib/stores/app";
 	import { toast } from "svelte-sonner";
-	import type { EmojiClickEvent } from "emoji-picker-element/shared";
-	import type { Picker } from "emoji-picker-element";
+  // import 'emoji-picker-element'; // causes ReferenceError: requestAnimationFrame is not defined
+	// import type { EmojiClickEvent } from "emoji-picker-element/shared";
+	// import type { Picker } from "emoji-picker-element";
 
   let showPicker = false
   const bookmarks: Array<BookmarkItem[] | BookmarkItem> = [
@@ -24,22 +25,21 @@
       { name: 'Mastodon', href: links.mastodon },
     ]}
   ]
-  $: if (showPicker) {
-
-    waitForElementToDisplay<Picker>('emoji-picker', (picker) => {
-      picker.addEventListener('emoji-click', (e: EmojiClickEvent) => {
-        const message = `Selected ${e.detail.emoji.shortcodes ? e.detail.emoji.shortcodes[0] : ''}emoji: ${e.detail.unicode}`
-        debugLog(message, e.detail)
-        toast.success(message, {
-            description: "Click to copy to clipboard",
-            action: {
-              label: "Copy",
-              onClick: () => e.detail.unicode && navigator.clipboard.writeText(e.detail.unicode)
-            }
-          })
-      })
-    }, 500)
-  }
+  // $: if (showPicker) {
+  //   waitForElementToDisplay<Picker>('emoji-picker', (picker) => {
+  //     picker.addEventListener('emoji-click', (e: EmojiClickEvent) => {
+  //       const message = `Selected ${e.detail.emoji.shortcodes ? e.detail.emoji.shortcodes[0] : ''}emoji: ${e.detail.unicode}`
+  //       debugLog(message, e.detail)
+  //       toast.success(message, {
+  //           description: "Click to copy to clipboard",
+  //           action: {
+  //             label: "Copy",
+  //             onClick: () => e.detail.unicode && navigator.clipboard.writeText(e.detail.unicode)
+  //           }
+  //         })
+  //     })
+  //   }, 500)
+  // }
 </script>
 
 <Menubar.Root class="rounded-none border-b border-none">
@@ -168,6 +168,9 @@
 
 <Dialog.Root open={showPicker} onOpenChange={value => showPicker = value}>
   <Dialog.Content class="max-w-[340px] p-0" showClose={false}>
+    <span class='p-4'>
+      Emoji Picker could not be loaded. 🥺
+    </span>
     <emoji-picker></emoji-picker>
   </Dialog.Content>
 </Dialog.Root>

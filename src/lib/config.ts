@@ -5,8 +5,13 @@ export const LAST_NAME = 'Muensterer';
 export const NAME_ABBREVIATION = FIRST_NAME.slice(0, 1) + LAST_NAME.slice(0, 1);
 export const OWNER_NAME = FIRST_NAME + ' ' + LAST_NAME;
 export const WEBSITE_NAME = LAST_NAME.toLowerCase() + 'OS';
-export const USERNAME_LONG = 'dennismuensterer';
+export const USERNAME = 'dennismuensterer';
+export const EMAIL_PROVIDER = 'gmail';
+export const EMAIL = `${USERNAME}@${EMAIL_PROVIDER}.com`;
+export const USERNAME_LONG = USERNAME;
 export const USERNAME_SHORT = disemvowel(USERNAME_LONG);
+export const API_URL = 'https://dnnsmnstrr.vercel.app/';
+export const DEFAULT_URL = 'https://muensterer.tech/';
 
 export const links: Record<string, string> = {
 	yat: 'https://y.at/🤖💻📱⌚🎧',

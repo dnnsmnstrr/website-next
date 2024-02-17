@@ -11,7 +11,6 @@
 	import CommandButton from '$lib/components/CommandButton.svelte';
 	import Button from "$lib/components/ui/button/button.svelte";
 	import { WEBSITE_NAME, links } from "$lib/config";
-	import List from "$lib/components/typography/List.svelte";
 
 	import Heading from "$lib/components/typography/Heading.svelte";
 
@@ -39,7 +38,7 @@
 		<Menu />
 	</nav>
   <nav class="flex items-center sm:hidden">
-    <Sheet.Root open={    isMobileMenuOpen} onOpenChange={(value) => isMobileMenuOpen = value}>
+    <Sheet.Root open={isMobileMenuOpen} onOpenChange={(value) => isMobileMenuOpen = value}>
       <Sheet.Trigger>
         <Button variant="outline">
           <MenuIcon />
