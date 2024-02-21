@@ -75,7 +75,7 @@
         konamiIndex = 0
       }
       if (konamiIndex === konamiCode.length) {
-        debugLog('I\'m Gonna Do What\'s Called a Pro Gamer Move!')
+        debugLog('That\'s what I call a Pro Gamer Move!')
       }
 
       // meta
