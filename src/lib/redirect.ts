@@ -1,6 +1,6 @@
 import { DEFAULT_URL } from "./config";
 
-type Redirect = {
+export type Redirect = {
   name: string;
   description?: string;
   url?: string;
@@ -10,7 +10,8 @@ type Redirect = {
 
 type RedirectOptions = {
   log?: (...inputs: any) => void;
-  noReturn?: boolean
+  returnObject?: boolean;
+  noReturn?: boolean;
 }
 export function getRedirect (query: string, redirects: Redirect[], options?: RedirectOptions) {
   if (options && options.log) {
@@ -36,10 +37,10 @@ export function getRedirect (query: string, redirects: Redirect[], options?: Red
       }
   }
 
-  return getRedirectURL(redirect, {query, ...options})
+  return options?.returnObject ? redirect : getRedirectURL(redirect, {query, ...options})
 }
 
-const getRedirectURL = ({url, name}: Redirect, { query, noReturn }: { query?: string } & RedirectOptions = {}) => {
+export const getRedirectURL = ({url, name}: Redirect, { query, noReturn }: { query?: string } & RedirectOptions = {}) => {
   let path = ''
   if (url) {
     path = `${url}${path}`
@@ -49,5 +50,7 @@ const getRedirectURL = ({url, name}: Redirect, { query, noReturn }: { query?: st
     // a failed redirect will end up back here, therefore the 'noReturn' parameter is used to avoid endless loops on redirect attempts
     path = `${DEFAULT_URL}/${!noReturn ? query : ''}`
   }
+  console.log('path', path)
+
   return path
 }

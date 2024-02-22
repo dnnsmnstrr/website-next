@@ -10,8 +10,8 @@ export const EMAIL_PROVIDER = 'gmail';
 export const EMAIL = `${USERNAME}@${EMAIL_PROVIDER}.com`;
 export const USERNAME_LONG = USERNAME;
 export const USERNAME_SHORT = disemvowel(USERNAME_LONG);
-export const API_URL = 'https://dnnsmnstrr.vercel.app/';
-export const DEFAULT_URL = 'https://muensterer.tech/';
+export const API_URL = 'https://dnnsmnstrr.vercel.app';
+export const DEFAULT_URL = 'https://dnnsmnstrr.github.io';
 
 export const links: Record<string, string> = {
 	yat: 'https://y.at/🤖💻📱⌚🎧',

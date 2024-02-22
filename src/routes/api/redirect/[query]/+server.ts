@@ -1,5 +1,5 @@
 import { redirect } from '@sveltejs/kit';
-import { redirects } from "../redirects";
+import { redirects } from '$lib/redirects';
 import { getRedirect } from '$lib/redirect';
 
 export async function GET({ params }) {

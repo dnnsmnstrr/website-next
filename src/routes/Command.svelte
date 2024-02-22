@@ -30,6 +30,7 @@
 	Keyboard,
 	ScrollText,
 	Search,
+	Signpost,
   } from "lucide-svelte";
   import * as Command from "$lib/components/ui/command";
   import * as Dialog from "$lib/components/ui/dialog";
@@ -242,7 +243,8 @@
       { name: 'Home', icon: Home, url: '/' },
       { name: 'About', icon: User, url: '/about' },
       { name: 'Playground', icon: Shapes, url: '/playground' },
-      { name: 'Search Zettelkasten', aliases: 'search notes', icon: Search, action: handleDocsearch},
+      { name: 'Redirects', icon: Signpost, url: '/redirects' },
+      { name: 'Search Zettelkasten', aliases: 'search notes find information knowledge second brain', icon: Search, action: handleDocsearch},
       { name: 'Settings', aliases: 'configuration setup', icon: Settings, url: '/settings' },
       { name: 'Keyboard Shortcuts', aliases: 'keyboard shortcuts help assistance hotkeys', icon: Keyboard, action: () => {showHelp = true; $isCommandActive = false} },
       { name: 'Go Forward', icon: ArrowRight, action: () => window.history.forward() },
