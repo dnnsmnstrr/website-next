@@ -17,8 +17,9 @@
   let showPicker = false
   const bookmarks: Array<BookmarkItem[] | BookmarkItem> = [
     [
+      { name: 'Imprint' },
       { name: 'About' },
-      { name: 'Imprint' }
+      { name: 'Redirects' }
     ],
     { name: 'Social', sub: [
       { name: 'Instagram', href: links.instagram },

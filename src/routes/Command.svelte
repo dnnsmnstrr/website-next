@@ -135,6 +135,9 @@
         case 'h':
           goto('/')
           break;
+        case 'r':
+          goto('/redirects')
+          break;
         case 's':
           goto('/settings')
           break;
