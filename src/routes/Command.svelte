@@ -29,6 +29,7 @@
 	Shapes,
 	Keyboard,
 	ScrollText,
+	Search,
   } from "lucide-svelte";
   import * as Command from "$lib/components/ui/command";
   import * as Dialog from "$lib/components/ui/dialog";
@@ -46,6 +47,12 @@
 	import List from "$lib/components/typography/List.svelte";
 	import Kbd from "$lib/components/typography/Kbd.svelte";
 	import { page } from "$app/stores";
+  import {
+    PUBLIC_ALGOLIA_APP_ID,
+    PUBLIC_ALGOLIA_API_KEY
+  } from "$env/static/public"
+  import docsearch from '@docsearch/js';
+  import '@docsearch/css';
 
   let loading = false;
   let showHelp = false;
@@ -54,89 +61,119 @@
   const shortcuts = [
     { key: '?', description: 'Open this help dialog' },
     { key: 'esc', description: 'Close open dialog'},
+    { key: '/', description: 'Search Zettelkasten with Algolia'},
     { key: ['⌘', ','], description: 'Go to settings'},
     { key: ['⌘', 'F'], description: 'Fullscreen'},
     { key: ['⌘', 'P'], description: 'Print'},
   ]
   const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a']
   let konamiIndex = 0
-  onMount(() => {
-    function handleKeydown(e: KeyboardEvent) {
-      if ($debug) {
-        console.log(e)
-      }
-      const ignoredKeys = ['Dead', 'Backspace', 'c', 'v', 'a']
-      if(!ignoredKeys.includes(e.key) && (e.ctrlKey || e.metaKey)) e.preventDefault();
-
-      // konami easter egg https://en.wikipedia.org/wiki/Konami_Code
-      if (e.key === konamiCode[konamiIndex]) {
-        konamiIndex += 1
-      } else {
-        konamiIndex = 0
-      }
-      if (konamiIndex === konamiCode.length) {
-        debugLog('That\'s what I call a Pro Gamer Move!')
-      }
-
-      // meta
-      if (e.metaKey || e.ctrlKey) {
-        switch (e.key) {
-          case ',':
-            goto('/settings')
-            break;
-          case 'f':
-            toggleFullscreen()
-            break;
-          case 'k':
-            $isCommandActive = !$isCommandActive;
-            break;
-          case 'r':
-            reloadPage();
-            break
-          default:
-            break;
-        }
-      }
-
-      // shortcuts
-      const noFocusedElement = document.activeElement === document.body
-      if (e.shiftKey && noFocusedElement) {
-        switch (e.key) {
-          case '?':
-            showHelp = !showHelp
-            debugLog(showHelp ? 'Showing' : 'Closing', 'help dialog...')
-            break;
-          default:
-            break;
-        }
-      }
-      if (lastKey === 'g' && noFocusedElement) {
-        switch (e.key) {
-          case 'a':
-            goto('/about')
-            break;
-          case 'i':
-            goto('/imprint')
-            break;
-          case 'h':
-            goto('/')
-            break;
-          case 's':
-            goto('/settings')
-            break;
-          default:
-            break;
-        }
-      }
-      if (lastKey === 'd' && e.key === "m" && noFocusedElement) {
-        toggleMode()
-      }
-      if (e.key === 'Escape' && $isCommandActive) {
-        $isCommandActive = false;
-      }
-      lastKey = e.key;
+  function handleKeydown(e: KeyboardEvent) {
+    if ($debug) {
+      console.log(e)
     }
+    const ignoredKeys = ['Dead', 'Backspace', 'c', 'v', 'a']
+    if(!ignoredKeys.includes(e.key) && (e.ctrlKey || e.metaKey)) {
+      debugLog('Preventing default behavior for key: ' + e.key)
+      e.preventDefault()
+    }
+    if (e.key !== 'Escape' && e.key !== '/') {
+      e.stopImmediatePropagation();
+    }
+
+    // konami easter egg https://en.wikipedia.org/wiki/Konami_Code
+    if (e.key === konamiCode[konamiIndex]) {
+      konamiIndex += 1
+    } else {
+      konamiIndex = 0
+    }
+    if (konamiIndex === konamiCode.length) {
+      debugLog('That\'s what I call a Pro Gamer Move!')
+    }
+
+    // meta
+    if (e.metaKey || e.ctrlKey) {
+      switch (e.key) {
+        case ',':
+          goto('/settings')
+          break;
+        case 'f':
+          toggleFullscreen()
+          break;
+        case 'k':
+          $isCommandActive = !$isCommandActive;
+          break;
+        case 'r':
+          reloadPage();
+          break
+        default:
+          break;
+      }
+    }
+
+    // shortcuts
+    const noFocusedElement = document.activeElement === document.body
+    if (e.shiftKey && noFocusedElement) {
+      switch (e.key) {
+        case '?':
+          showHelp = !showHelp
+          debugLog(showHelp ? 'Showing' : 'Closing', 'help dialog...')
+          break;
+        default:
+          break;
+      }
+    }
+    if (lastKey === 'g' && noFocusedElement) {
+      switch (e.key) {
+        case 'a':
+          goto('/about')
+          break;
+        case 'i':
+          goto('/imprint')
+          break;
+        case 'h':
+          goto('/')
+          break;
+        case 's':
+          goto('/settings')
+          break;
+        default:
+          break;
+      }
+    }
+    if (lastKey === 'd' && e.key === "m" && noFocusedElement) {
+      toggleMode()
+    }
+    if (e.key === 'Escape' && $isCommandActive) {
+      $isCommandActive = false;
+    }
+    lastKey = e.key;
+  }
+  function initDocsearch() {
+    docsearch({
+      container: '#docsearch',
+      appId: PUBLIC_ALGOLIA_APP_ID,
+      apiKey: PUBLIC_ALGOLIA_API_KEY,
+      indexName: 'dnnsmnstrr-gitlab',
+      placeholder: 'Search Zettelkasten',
+      insights: true,
+      navigator: {
+        // https://www.algolia.com/doc/ui-libraries/autocomplete/core-concepts/keyboard-navigation/
+        navigate({ itemUrl }) {
+          const windowReference = window.open(itemUrl, '_blank', 'noopener');
+          if (windowReference) {
+            windowReference.focus();
+          }
+        },
+        navigateNewTab({ itemUrl }) {
+          window.location.assign(itemUrl); // switched this from the default navigate function
+        },
+      },
+    });
+  }
+  onMount(() => {
     document.addEventListener("keydown", handleKeydown);
+    initDocsearch()
     return () => {
       document.removeEventListener("keydown", handleKeydown);
     };
@@ -188,11 +225,24 @@
     $isCommandActive = false
   }
 
+  function handleDocsearch() {
+    try {
+      debugLog("Intializing Algolia DocSearch...")
+      const docSearchButton = document.querySelector('.DocSearch.DocSearch-Button') as HTMLButtonElement
+      if (docSearchButton && docSearchButton.click) {
+        docSearchButton.click()
+      }
+      $isCommandActive = false
+    } catch (error) {
+      console.log('error', error)
+    }
+  }
   $: commandConfig = {
     navigation: [
       { name: 'Home', icon: Home, url: '/' },
       { name: 'About', icon: User, url: '/about' },
       { name: 'Playground', icon: Shapes, url: '/playground' },
+      { name: 'Search Zettelkasten', aliases: 'search notes', icon: Search, action: handleDocsearch},
       { name: 'Settings', aliases: 'configuration setup', icon: Settings, url: '/settings' },
       { name: 'Keyboard Shortcuts', aliases: 'keyboard shortcuts help assistance hotkeys', icon: Keyboard, action: () => {showHelp = true; $isCommandActive = false} },
       { name: 'Go Forward', icon: ArrowRight, action: () => window.history.forward() },
@@ -205,9 +255,11 @@
       { name: ($debug ? 'Disable' : 'Enable') + ' Debug Mode', icon: $debug ? BugOff : Bug, action: toggleDebug },
     ]
   } as Record<string, CommandData[]>
+
+
 </script>
 
-<Command.Dialog bind:open={$isCommandActive} >
+<Command.Dialog bind:open={$isCommandActive}>
   <Command.Input placeholder="Type a command or search..." />
   <Command.List>
     <Command.Empty>No results found.</Command.Empty>
@@ -286,7 +338,7 @@
 </Command.Dialog>
 
 <Dialog.Root open={showHelp} onOpenChange={(value) => showHelp = value}>
-  <Dialog.Content>
+  <Dialog.Content showClose>
     <Dialog.Header>
       <Dialog.Title>Keyboard Shortcuts</Dialog.Title>
       <Dialog.Description>
@@ -314,3 +366,5 @@
     </List>
   </Dialog.Content>
 </Dialog.Root>
+
+<div class="hidden" id="docsearch" />

@@ -35,6 +35,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@docsearch/js": "^3.5.2",
 		"@sentry/sveltekit": "^7.100.1",
 		"bits-ui": "^0.17.0",
 		"clsx": "^2.1.0",

@@ -14,6 +14,7 @@
   }
   $: debugLog("Debug Mode", $debug ? "enabled" : "disabled");
   $: if ($mode) {
+    document.documentElement.setAttribute("data-theme", $mode)
     debugLog('Theme was set to ' + $mode);
     resetColors();
   }
@@ -36,6 +37,5 @@
 	<main class="w-full h-full max-h-screen flex-grow sm:px-16 overflow-y-auto print:max-h-none">
     <slot />
 	</main>
-
 	<Footer />
 </div>

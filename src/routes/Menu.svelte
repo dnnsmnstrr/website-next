@@ -9,6 +9,7 @@
 	import { toggleMode } from "mode-watcher";
 	import { debugLog } from "$lib/stores/app";
 	import { toast } from "svelte-sonner";
+
   // import 'emoji-picker-element'; // causes ReferenceError: requestAnimationFrame is not defined
 	// import type { EmojiClickEvent } from "emoji-picker-element/shared";
 	// import type { Picker } from "emoji-picker-element";
@@ -168,9 +169,6 @@
 
 <Dialog.Root open={showPicker} onOpenChange={value => showPicker = value}>
   <Dialog.Content class="max-w-[340px] p-0" showClose={false}>
-    <span class='p-4'>
-      Emoji Picker could not be loaded. 🥺
-    </span>
-    <emoji-picker></emoji-picker>
+    <div id="docsearch"></div>
   </Dialog.Content>
 </Dialog.Root>
