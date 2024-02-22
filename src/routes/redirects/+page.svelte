@@ -3,17 +3,14 @@
 	import { Input } from '$lib/components/ui/input';
 	import * as Table from '$lib/components/ui/table';
 	import { getRedirectURL, type Redirect } from '$lib/redirect';
-	import { redirect } from '@sveltejs/kit';
 
   export let data
   function handleRedirect(redirect: Redirect) {
     const redirectUrl = getRedirectURL(redirect);
     window.open(redirectUrl, "_blank");
-    // window.location.assign(redirectUrl)
   }
   let filterQuery = ''
   const searchFilter = (redirect: Redirect) => {
-    console.log('filter', filterQuery, redirect)
     if (!filterQuery) {
       return true
     }
@@ -49,8 +46,6 @@
         <Table.Cell>{redirect.aliases?.join(', ') || '-'}</Table.Cell>
         <Table.Cell class="text-right">{redirect.url || '/' + redirect.name.toLocaleLowerCase()}</Table.Cell>
       </Table.Row>
-    {:else}
-      <!-- empty list -->
     {/each}
   </Table.Body>
 </Table.Root>
