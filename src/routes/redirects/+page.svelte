@@ -8,7 +8,8 @@
   export let data
   function handleRedirect(redirect: Redirect) {
     const redirectUrl = getRedirectURL(redirect);
-    window.location.assign(redirectUrl)
+    window.open(redirectUrl, "_blank");
+    // window.location.assign(redirectUrl)
   }
   let filterQuery = ''
   const searchFilter = (redirect: Redirect) => {
@@ -20,7 +21,7 @@
     return redirect.name.includes(filterQuery.toLowerCase()) || redirect.aliases?.some(alias => alias.includes(filterQuery))
   }
   let filteredRedirects = data.redirects
-  $: if (filterQuery) {
+  $: if (filterQuery || data.redirects) {
     filteredRedirects = data.redirects.filter(searchFilter); filterQuery
   }
 </script>
@@ -29,17 +30,15 @@
   <Heading>Redirects</Heading>
   <Input placeholder="Search..." class="w-40 mt-2" bind:value={filterQuery} />
 </div>
-{#await data.redirects}
-  Loading Redirects
-{:then redirects}
-  <Table.Root>
-  <Table.Caption>Available redirects</Table.Caption>
+
+<Table.Root class="mb-4">
+  <Table.Caption>Available redirects: {filteredRedirects.length}, Total: {data.redirects.length}</Table.Caption>
   <Table.Header>
     <Table.Row>
       <Table.Head class="w-[100px]">Name</Table.Head>
       <Table.Head>Description</Table.Head>
-      <Table.Head>URL</Table.Head>
-      <Table.Head class="text-right">Aliases</Table.Head>
+      <Table.Head>Aliases</Table.Head>
+      <Table.Head class="text-right">URL</Table.Head>
     </Table.Row>
   </Table.Header>
   <Table.Body>
@@ -55,6 +54,3 @@
     {/each}
   </Table.Body>
 </Table.Root>
-{:catch error}
-  Error loading redirects
-{/await}
