@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { Hash } from "lucide-svelte";
   import { Button } from "$lib/components/ui/button"
-	import { getContext } from "svelte";
-	import type { TypographyContext } from ".";
   import slugify from "slugify";
 	import { page } from "$app/stores";
+	import { getContext } from "svelte";
+	import type { TypographyContext } from ".";
+  const typography = getContext<TypographyContext>('typography')
+
   export let depth = 1
   const levels = [
     'scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-6',
@@ -12,10 +14,9 @@
     'scroll-m-20 text-2xl font-semibold tracking-tight mt-3 mb-2',
     'scroll-m-20 text-xl font-semibold tracking-tight my-2'
   ]
-  const typography = getContext<TypographyContext>('typography')
 
   let data: HTMLHeadingElement;
-  $: id = slugify(data?.innerText || data?.innerHTML.toString() || '', {remove: /[*+~.()'"!:@]/g})
+  $: id = slugify(data?.innerText || data?.innerHTML.toString() || '', {remove: /[\/*+~.()'"!:@]/g})
   $: isLinked = $page.url.hash === '#' + id
 </script>
 

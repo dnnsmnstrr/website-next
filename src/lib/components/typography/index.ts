@@ -4,7 +4,8 @@ import Link from './Link.svelte';
 import List from './List.svelte';
 
 export type TypographyContext = {
-	renderHeadingAnchors: boolean;
+	renderHeadingAnchors?: boolean;
+  externalLinks?: boolean;
 };
 
 const renderers = {

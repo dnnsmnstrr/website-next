@@ -8,6 +8,7 @@
 	import { waitForElementToDisplay } from '$lib/browser';
   setContext<TypographyContext>('typography', {
     renderHeadingAnchors: true,
+    externalLinks: true,
   })
   $: if ($page.url.hash) {
     const anchorId = $page.url.hash

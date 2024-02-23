@@ -1,9 +1,16 @@
 <script lang="ts">
 	import type { HTMLAttributeAnchorTarget } from "svelte/elements";
   import { ExternalLink } from "lucide-svelte";
+  import { getContext } from "svelte";
+	import type { TypographyContext } from ".";
+  const typography = getContext<TypographyContext>('typography')
+
   export let href: string | undefined
   export let target: HTMLAttributeAnchorTarget | null | undefined = undefined
   export const text: string = ''
+  if (typography?.externalLinks) {
+    target = '_blank'
+  }
 </script>
 
 <a
@@ -13,7 +20,7 @@
   {...$$restProps}
 >
   <slot />
-  {#if target === '_blank'}
+  {#if target === '_blank' && !typography?.externalLinks}
     <ExternalLink size=14 />
   {/if}
 </a>
