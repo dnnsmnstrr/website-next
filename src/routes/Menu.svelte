@@ -174,7 +174,7 @@
 				Keyboard Shortcuts <Menubar.Shortcut>?</Menubar.Shortcut>
 			</Menubar.Item>
 			<Menubar.Separator />
-      <Menubar.Item href={'dennismuensterer@gmail.com'}>
+      <Menubar.Item href={links.mailto} target="_blank">
 				Contact <Menubar.Shortcut>@</Menubar.Shortcut>
 			</Menubar.Item>
 		</Menubar.Content>
