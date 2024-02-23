@@ -36,18 +36,21 @@
   import * as Dialog from "$lib/components/ui/dialog";
   import { mode, toggleMode } from 'mode-watcher';
   import { onMount } from "svelte";
-	import { isCommandActive, debug, debugLog, primaryColor, backgroundColor, resetColors } from "$lib/stores/app";
+	import { isCommandActive, debug, debugLog, primaryColor, backgroundColor, resetColors, showHelp } from "$lib/stores/app";
 	import Progress from "$lib/components/ui/progress/progress.svelte";
 	import { tweened } from "svelte/motion";
 	import { cubicInOut } from "svelte/easing";
 	import { goto } from "$app/navigation";
 	import { capitalize, hexToHsl } from "$lib/helper";
-	import { reloadPage, toggleFullscreen } from "$lib/browser";
+	import { reloadPage, scrollToBottom, scrollToTop, toggleFullscreen } from "$lib/browser";
   import { confettiAction, eyeDropperAction } from "svelte-legos";
   import { toast } from "svelte-sonner";
 	import List from "$lib/components/typography/List.svelte";
 	import Kbd from "$lib/components/typography/Kbd.svelte";
 	import { page } from "$app/stores";
+  import {
+    links
+  } from '$lib/config'
   import {
     PUBLIC_ALGOLIA_APP_ID,
     PUBLIC_ALGOLIA_API_KEY
@@ -56,10 +59,9 @@
   import '@docsearch/css';
 
   let loading = false;
-  let showHelp = false;
   let lastKey = '';
 
-  const shortcuts = [
+  const keyboardShortcuts = [
     { key: '?', description: 'Open this help dialog' },
     { key: 'esc', description: 'Close open dialog'},
     { key: '/', description: 'Search Zettelkasten with Algolia'},
@@ -67,6 +69,13 @@
     { key: ['⌘', 'F'], description: 'Fullscreen'},
     { key: ['⌘', 'P'], description: 'Print'},
   ]
+  const gotoShortcuts: Record<string, string> = {
+    a: '/about',
+    i: '/imprint',
+    h: '/', // home
+    r: '/redirects',
+    s: '/settings'
+  }
   const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a']
   let konamiIndex = 0
   function handleKeydown(e: KeyboardEvent) {
@@ -117,8 +126,11 @@
     if (e.shiftKey && noFocusedElement) {
       switch (e.key) {
         case '?':
-          showHelp = !showHelp
-          debugLog(showHelp ? 'Showing' : 'Closing', 'help dialog...')
+          $showHelp = !$showHelp
+          debugLog($showHelp ? 'Showing' : 'Closing', 'help dialog...')
+          break;
+        case '@':
+          window.location.href = links.mailto
           break;
         default:
           break;
@@ -126,23 +138,16 @@
     }
     if (lastKey === 'g' && noFocusedElement) {
       switch (e.key) {
-        case 'a':
-          goto('/about')
+        case 'b':
+          scrollToBottom()
           break;
-        case 'i':
-          goto('/imprint')
-          break;
-        case 'h':
-          goto('/')
-          break;
-        case 'r':
-          goto('/redirects')
-          break;
-        case 's':
-          goto('/settings')
+        case 't':
+          scrollToTop();
           break;
         default:
-          break;
+          if (gotoShortcuts[e.key]) {
+            goto(gotoShortcuts[e.key])
+          }
       }
     }
     if (lastKey === 'd' && e.key === "m" && noFocusedElement) {
@@ -150,6 +155,9 @@
     }
     if (e.key === 'Escape' && $isCommandActive) {
       $isCommandActive = false;
+    }
+    if (['Escape', '/'].includes(e.key) && $showHelp) {
+      $showHelp = false;
     }
     lastKey = e.key;
   }
@@ -215,13 +223,13 @@
     }
   }
 
-  const links: CommandData[] = [
-    { name: "Instagram", icon: Instagram, url: "https://instagram.com/dnnsmnstrr" },
-    { name: "Spotify", aliases: 'music playlists', icon: Music, url: "https://open.spotify.com/user/dennismuensterer" },
-    { name: "Telegram", aliases: 'messages chats', icon: Send, url: "https://t.me/dnnsmnstrr" },
-    { name: "LinkedIn", aliases: 'work professional', icon: Linkedin, url: "https://www.linkedin.com/in/dennismuensterer" },
-    { name: "Twitter/X", icon: Twitter, url: "https://twitter.com/dnnsmnstrr" },
-    { name: "CV", aliases: 'resume curriculum vitae', icon: ScrollText, url: "https://cv.muensterer.tech" },
+  const externalLinks: CommandData[] = [
+    { name: "Instagram", icon: Instagram, url: links.instagram },
+    { name: "Spotify", aliases: 'music playlists', icon: Music, url: links.spotify },
+    { name: "Telegram", aliases: 'messages chats', icon: Send, url: links.telegram },
+    { name: "LinkedIn", aliases: 'work professional', icon: Linkedin, url: links.linkedin },
+    { name: "Twitter/X", icon: Twitter, url: links.x },
+    { name: "CV", aliases: 'resume curriculum vitae', icon: ScrollText, url: links.cv },
   ].map(enrichLink);
 
   function toggleDebug() {
@@ -249,12 +257,12 @@
       { name: 'Redirects', icon: Signpost, url: '/redirects' },
       { name: 'Search Zettelkasten', aliases: 'search notes find information knowledge second brain', icon: Search, action: handleDocsearch},
       { name: 'Settings', aliases: 'configuration setup', icon: Settings, url: '/settings' },
-      { name: 'Keyboard Shortcuts', aliases: 'keyboard shortcuts help assistance hotkeys', icon: Keyboard, action: () => {showHelp = true; $isCommandActive = false} },
+      { name: 'Keyboard Shortcuts', aliases: 'keyboard shortcuts help assistance hotkeys', icon: Keyboard, action: () => {$showHelp = true; $isCommandActive = false} },
       { name: 'Go Forward', icon: ArrowRight, action: () => window.history.forward() },
       { name: 'Go Back', icon: ArrowLeft, action: () => window.history.back() },
       { name: 'Reload', icon: ArrowLeft, action: reloadPage },
     ].filter(link => $page.url.pathname !== link.url).map(enrichLink),
-    links,
+    externalLinks,
     system: [
       { name: 'Toggle Dark Mode', value: 'theme', icon: $mode === 'light' ? Sun : Moon, action: toggleMode },
       { name: ($debug ? 'Disable' : 'Enable') + ' Debug Mode', icon: $debug ? BugOff : Bug, action: toggleDebug },
@@ -342,7 +350,7 @@
   </Command.Loading>
 </Command.Dialog>
 
-<Dialog.Root open={showHelp} onOpenChange={(value) => showHelp = value}>
+<Dialog.Root open={$showHelp} onOpenChange={(value) => $showHelp = value}>
   <Dialog.Content showClose>
     <Dialog.Header>
       <Dialog.Title>Keyboard Shortcuts</Dialog.Title>
@@ -351,7 +359,7 @@
       </Dialog.Description>
     </Dialog.Header>
     <List class="space-y-4">
-      {#each shortcuts as shortcut}
+      {#each keyboardShortcuts as shortcut}
          <li class="flex">
           <div class="min-w-20">
             {#if Array.isArray(shortcut.key)}

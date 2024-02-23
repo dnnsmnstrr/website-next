@@ -104,3 +104,19 @@ export function waitForElementToDisplay<T extends Element = Element>(
 		}
 	})();
 }
+
+export const scrollToTop = (selector = 'main') => {
+  debugLog('scrolling to top');
+  const element = document.querySelector(selector)
+  if (element) {
+    element.scrollTop = 0;
+  }
+}
+
+export const scrollToBottom = (selector = 'main') => {
+  debugLog('scrolling to bottom');
+	const element = document.querySelector(selector);
+	if (element) {
+		element.scrollTop = element.scrollHeight;
+	}
+};

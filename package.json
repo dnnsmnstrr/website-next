@@ -45,6 +45,7 @@
 		"formsnap": "^0.4.3",
 		"lucide-svelte": "^0.321.0",
 		"mode-watcher": "^0.2.0",
+		"slugify": "^1.6.6",
 		"svelte-drag-and-drop-actions": "^1.0.1",
 		"svelte-drag-drop-touch": "^0.1.9",
 		"svelte-legos": "^0.2.2",

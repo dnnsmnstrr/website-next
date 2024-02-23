@@ -7,7 +7,7 @@
 	import { closeWindow, isBrowserInFullscreen, printPage, reloadPage, toggleFullscreen, waitForElementToDisplay } from "$lib/browser";
 	import { WEBSITE_NAME, links } from "$lib/config";
 	import { toggleMode } from "mode-watcher";
-	import { debugLog } from "$lib/stores/app";
+	import { debugLog, showHelp } from "$lib/stores/app";
 	import { toast } from "svelte-sonner";
 
   // import 'emoji-picker-element'; // causes ReferenceError: requestAnimationFrame is not defined
@@ -164,6 +164,19 @@
       {/each}
 			<Menubar.Separator />
 			<Menubar.Item href="https://muensterer.lol" target="_blank">Current Homepage</Menubar.Item>
+		</Menubar.Content>
+	</Menubar.Menu>
+
+  <Menubar.Menu>
+		<Menubar.Trigger>Help</Menubar.Trigger>
+		<Menubar.Content>
+      <Menubar.Item on:click={() => $showHelp = !$showHelp}>
+				Keyboard Shortcuts <Menubar.Shortcut>?</Menubar.Shortcut>
+			</Menubar.Item>
+			<Menubar.Separator />
+      <Menubar.Item href={'dennismuensterer@gmail.com'}>
+				Contact <Menubar.Shortcut>@</Menubar.Shortcut>
+			</Menubar.Item>
 		</Menubar.Content>
 	</Menubar.Menu>
 </Menubar.Root>

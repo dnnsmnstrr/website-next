@@ -29,9 +29,11 @@ export const links: Record<string, string> = {
 	tiktok: 'https://www.tiktok.com/@' + USERNAME_SHORT,
 	paypal: 'https://www.paypal.com/paypalme/' + USERNAME_LONG,
 	kickstarter: 'https://www.kickstarter.com/profile/' + USERNAME_LONG,
-  steam: 'https://steamcommunity.com/id/' + USERNAME_SHORT,
-  routinehub: 'https://routinehub.co/user/' + USERNAME_SHORT,
+	steam: 'https://steamcommunity.com/id/' + USERNAME_SHORT,
+	routinehub: 'https://routinehub.co/user/' + USERNAME_SHORT,
 	imdb: 'https://www.imdb.com/user/ur31201407',
+	mailto: 'mailto:' + EMAIL,
+  cv: "https://cv.muensterer.tech"
 };
 
 export const descriptions = [

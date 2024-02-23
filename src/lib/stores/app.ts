@@ -19,6 +19,7 @@ export function resetColors () {
 }
 // command
 export const isCommandActive = writable(false);
+export const showHelp = writable(false);
 
 // debug mode
 const storedDebugSetting = browser ? window?.localStorage?.debug === 'true' : false;

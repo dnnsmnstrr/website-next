@@ -12,10 +12,6 @@ Kontakt:
 
 ## Social Media
 
-1. asdf
-2. sdfh
-3. asdfg
-
 Dieses Impressum gilt auch für folgende Social-Media-Präsenzen und Onlineprofile:
 - Facebook ([dennismuensterer](https://facebook.com/dennismuensterer))
 - LinkedIn ([dennismuensterer](https://www.linkedin.com/in/dennismuensterer))
@@ -31,14 +27,23 @@ Auf dieser Webseite werden keine personenbezogenen Daten erhoben, gespeichert od
 This website does not collect, store or process Personally Identifiable Information (PII). This website does not require the use of cookies.
 
 ## Verweis auf Dritte
-Diese Website wird auf [GitHub](https://www.github.com/) mit [GitHub Pages](https://help.github.com/articles/what-is-github-pages/) gehostet. Die GitHub Datenschutzerklärung ist [hier](https://docs.github.com/de/site-policy/privacy-policies/github-privacy-statement) hinterlegt.
+Diese Website wird mit [Vercel](https://vercel.com/) betrieben. Deren Datenschutzerklärung befindet sich [hier](https://vercel.com/legal/privacy-policy).
+
+Teile dieser Website werden auf [GitHub](https://www.github.com/) mit [GitHub Pages](https://help.github.com/articles/what-is-github-pages/) gehostet. Die GitHub Datenschutzerklärung ist [hier](https://docs.github.com/de/site-policy/privacy-policies/github-privacy-statement) hinterlegt.
+
+
+Um etwaige auftretende Fehler zu identifizieren, wird die Monitoring-Software [Sentry](https://sentry.io) eingesetzt. Hierbei  werden lediglich Informationen zum besseren Nachvollziehen der Fehler übertragen, jedoch keine persönlichen Daten. Die Datenschutzerklärung von Sentry findet sich [hier](https://sentry.io/privacy/).
 
 ## Third Party Inclusion
-This website is hosted by [GitHub](https://www.github.com/) using [GitHub Pages](https://help.github.com/articles/what-is-github-pages/). The GitHub Privacy Statement can be found [here](https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement).
+This website runs on [Vercel](https://vercel.com/). Their privacy policy can be found [here](https://vercel.com/legal/privacy-policy).
+
+Parts of the website are hosted on [GitHub](https://www.github.com/) using [GitHub Pages](https://help.github.com/articles/what-is-github-pages/). The GitHub Privacy Statement can be found [here](https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement).
+
+In order to identify potential errors, the monitoring software [Sentry](https://sentry.io) is used on this website. It only transmits information relevant to the problem and does not include personal information. Sentry's privacy policy is detailed [here](https://sentry.io/privacy/)
 
 <br />
 
-## Haftungsausschluss:
+## Haftungsausschluss
 
 ### Haftung für Inhalte
 
@@ -54,6 +59,6 @@ Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unt
 
 ## Datenschutz
 
-Die Nutzung meiner Webseite ist ohne Angabe personenbezogener Daten möglich. Soweit auf meinen Seiten personenbezogene Daten (beispielsweise Name, Anschrift oder eMail-Adressen) erhoben werden, erfolgt dies, soweit möglich, stets auf freiwilliger Basis. Diese Daten werden ohne Ihre ausdrückliche Zustimmung nicht an Dritte weitergegeben.
+Die Nutzung meiner Webseite ist ohne Angabe personenbezogener Daten möglich. Soweit auf meinen Seiten personenbezogene Daten (beispielsweise Name, Anschrift oder E-Mail-Adressen) erhoben werden, erfolgt dies, soweit möglich, stets auf freiwilliger Basis. Diese Daten werden ohne Ihre ausdrückliche Zustimmung nicht an Dritte weitergegeben.
 Ich weise darauf hin, dass die Datenübertragung im Internet (z.B. bei der Kommunikation per E-Mail) Sicherheitslücken aufweisen kann. Ein lückenloser Schutz der Daten vor dem Zugriff durch Dritte ist nicht möglich.
 Der Nutzung von im Rahmen der Impressumspflicht veröffentlichten Kontaktdaten durch Dritte zur Übersendung von nicht ausdrücklich angeforderter Werbung und Informationsmaterialien wird hiermit ausdrücklich widersprochen. Der Betreiber der Seiten behält sich ausdrücklich rechtliche Schritte im Falle der unverlangten Zusendung von Werbeinformationen, etwa durch Spam-Mails, vor.

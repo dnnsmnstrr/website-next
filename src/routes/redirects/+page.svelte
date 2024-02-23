@@ -25,11 +25,11 @@
 
 <div class="flex items-start justify-between">
   <Heading>Redirects</Heading>
-  <Input placeholder="Search..." class="w-40 mt-2" bind:value={filterQuery} />
+  <Input placeholder="Search..." type="search" class="w-52 mt-2" bind:value={filterQuery} />
 </div>
 
 <Table.Root class="mb-4">
-  <Table.Caption>Available redirects: {filteredRedirects.length}, Total: {data.redirects.length}</Table.Caption>
+  <Table.Caption>{filterQuery ? `Matching redirects: ${filteredRedirects.length}, ` : ''}Total: {data.redirects.length}</Table.Caption>
   <Table.Header>
     <Table.Row>
       <Table.Head class="w-[100px]">Name</Table.Head>
