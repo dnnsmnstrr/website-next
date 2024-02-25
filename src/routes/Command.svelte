@@ -36,13 +36,13 @@
   import * as Dialog from "$lib/components/ui/dialog";
   import { mode, toggleMode } from 'mode-watcher';
   import { onMount } from "svelte";
-	import { isCommandActive, debug, debugLog, primaryColor, backgroundColor, resetColors, showHelp } from "$lib/stores/app";
+	import { isCommandActive, debug, debugLog, primaryColor, backgroundColor, resetColors, showHelp, modifiedColors } from "$lib/stores/app";
 	import Progress from "$lib/components/ui/progress/progress.svelte";
 	import { tweened } from "svelte/motion";
 	import { cubicInOut } from "svelte/easing";
 	import { goto } from "$app/navigation";
 	import { capitalize, hexToHsl } from "$lib/helper";
-	import { reloadPage, scrollToBottom, scrollToTop, toggleFullscreen } from "$lib/browser";
+	import { isMobile, reloadPage, scrollToBottom, scrollToTop, toggleFullscreen } from "$lib/browser";
   import { confettiAction, eyeDropperAction } from "svelte-legos";
   import { toast } from "svelte-sonner";
 	import List from "$lib/components/typography/List.svelte";
@@ -59,6 +59,7 @@
   import '@docsearch/css';
 
   let loading = false;
+  let query = '';
   let lastKey = '';
 
   const keyboardShortcuts = [
@@ -161,6 +162,7 @@
     }
     lastKey = e.key;
   }
+
   function initDocsearch() {
     docsearch({
       container: '#docsearch',
@@ -262,7 +264,7 @@
       { name: 'Go Back', icon: ArrowLeft, action: () => window.history.back() },
       { name: 'Reload', icon: ArrowLeft, action: reloadPage },
     ].filter(link => $page.url.pathname !== link.url).map(enrichLink),
-    externalLinks,
+    links: externalLinks,
     system: [
       { name: 'Toggle Dark Mode', value: 'theme', icon: $mode === 'light' ? Sun : Moon, action: toggleMode },
       { name: ($debug ? 'Disable' : 'Enable') + ' Debug Mode', icon: $debug ? BugOff : Bug, action: toggleDebug },
@@ -273,7 +275,7 @@
 </script>
 
 <Command.Dialog bind:open={$isCommandActive}>
-  <Command.Input placeholder="Type a command or search..." />
+  <Command.Input bind:value={query} placeholder="Type a command or search..." />
   <Command.List>
     <Command.Empty>No results found.</Command.Empty>
     {#each Object.entries(commandConfig) as [group, commands]}
@@ -289,50 +291,54 @@
       </Command.Group>
     {/each}
     <Command.Group heading="Settings">
-      <button use:eyeDropperAction={{
-        onDone: (color) => {
-          const message = "Picked color: " + color
-          debugLog(message)
-          $primaryColor = hexToHsl(color)
-          toast.success(message, {
-            description: "Click to copy to clipboard",
-            action: {
-              label: "Copy",
-              onClick: () => navigator.clipboard.writeText(color)
-            }
-          })
-        },
-        onError: console.error
-      }} class="w-full">
-        <Command.Item>
-          <Pipette class="mr-2" />
-          Pick primary color
+      {#if !isMobile.any() && (!query || 'pick primary color pick background color'.includes(query))}
+        <button use:eyeDropperAction={{
+          onDone: (color) => {
+            const message = "Picked color: " + color
+            debugLog(message)
+            $primaryColor = hexToHsl(color)
+            toast.success(message, {
+              description: "Click to copy to clipboard",
+              action: {
+                label: "Copy",
+                onClick: () => navigator.clipboard.writeText(color)
+              }
+            })
+          },
+          onError: console.error
+        }} class="w-full">
+          <Command.Item >
+            <Pipette class="mr-2" />
+            Pick primary color
+          </Command.Item>
+        </button>
+        <button use:eyeDropperAction={{
+          onDone: (color) => {
+            const message = "Picked color: " + color
+            debugLog(message)
+            $backgroundColor = hexToHsl(color)
+            toast.success(message, {
+              description: "Click to copy to clipboard",
+              action: {
+                label: "Copy",
+                onClick: () => navigator.clipboard.writeText(color)
+              }
+            })
+          },
+          onError: console.error
+        }} class="w-full">
+          <Command.Item>
+            <Pipette class="mr-2" />
+            Pick background color
+          </Command.Item>
+        </button>
+      {/if}
+      {#if $modifiedColors}
+        <Command.Item onSelect={resetColors}>
+          <Palette class="mr-2" />
+          Reset theme colors
         </Command.Item>
-      </button>
-      <button use:eyeDropperAction={{
-        onDone: (color) => {
-          const message = "Picked color: " + color
-          debugLog(message)
-          $backgroundColor = hexToHsl(color)
-          toast.success(message, {
-            description: "Click to copy to clipboard",
-            action: {
-              label: "Copy",
-              onClick: () => navigator.clipboard.writeText(color)
-            }
-          })
-        },
-        onError: console.error
-      }} class="w-full">
-        <Command.Item>
-          <Pipette class="mr-2" />
-          Pick background color
-        </Command.Item>
-      </button>
-      <Command.Item>
-        <Palette class="mr-2" />
-        Reset theme colors
-      </Command.Item>
+      {/if}
     </Command.Group>
     <Command.Group heading="Fun">
       <button use:confettiAction class="w-full">

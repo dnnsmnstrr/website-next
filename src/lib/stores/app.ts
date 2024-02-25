@@ -11,11 +11,15 @@ export const primaryColor = cssVarStore('--primary', {
 export const backgroundColor = cssVarStore('--background', {
 	initialValue: defaultColors[currentMode || 'dark'].background
 });
+export const modifiedColors = writable(false);
+primaryColor.subscribe(color => modifiedColors.set(true))
+backgroundColor.subscribe(color => modifiedColors.set(true))
 export function resetColors () {
   debugLog('Resetting colors...');
   currentMode = get(mode)
   primaryColor.set(defaultColors[currentMode || 'dark'].primary);
   backgroundColor.set(defaultColors[currentMode || 'dark'].background);
+  modifiedColors.set(false)
 }
 // command
 export const isCommandActive = writable(false);
@@ -29,6 +33,7 @@ debug.subscribe((value) => {
 		window.localStorage.debug = String(value);
 	}
 })
+
 export function debugLog(...args: any[]) {
   const isDebugActive = get(debug)
   if (isDebugActive && browser) {
