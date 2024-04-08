@@ -1,18 +1,5 @@
-# create-svelte
+# muenstererOS
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
 
 ## Developing
 
@@ -35,4 +22,8 @@ npm run build
 
 You can preview the production build with `npm run preview`.
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+## APIs
+
+- https://techy-api.vercel.app/
+- https://corporatebs-generator.sameerkumar.website/
+- https://api.websitecarbon.com/site?url=muensterer.tech

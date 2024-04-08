@@ -2,16 +2,15 @@
   import * as Card from "$lib/components/ui/card/index.js";
   import * as Carousel from "$lib/components/ui/carousel/index.js";
 	import Draggable from "$lib/components/Draggable.svelte";
-	import DraggableContainer from "$lib/components/DraggableContainer.svelte";
-  import Counter from "../Counter.svelte";
+  import Counter from "./Counter.svelte";
 	import Heading from "$lib/components/typography/Heading.svelte";
 	import List from "$lib/components/typography/List.svelte";
 	import Link from "$lib/components/typography/Link.svelte";
+	import { counterCount } from "$lib/stores/playground";
 
   const basis = 'basis-full md:basis-1/2 lg:basis-1/3'
+
 </script>
-
-
 
 <Carousel.Root
   class="w-full"
@@ -23,7 +22,7 @@
   <Carousel.Content>
     <Carousel.Item class={basis}>
       <div class="p-2 sm:p-0.5">
-        <Card.Root>
+        <Card.Root class="min-h-[500px]">
           <Card.Header>
             <Card.Title>Typography</Card.Title>
             <Card.Description>
@@ -52,7 +51,7 @@
 
     <Carousel.Item class={basis}>
       <div class="p-2 sm:p-0.5">
-        <Card.Root>
+        <Card.Root class="min-h-[500px]">
           <Card.Header>
             <Card.Title>Draggable Container</Card.Title>
             <Card.Description>
@@ -71,14 +70,14 @@
 
     <Carousel.Item class="{basis} h-full">
       <div class="p-2 sm:p-0.5 h-full">
-        <Card.Root>
+        <Card.Root class="min-h-[500px]">
           <Card.Header>
             <Card.Title>Svelte Counter Component</Card.Title>
           </Card.Header>
           <Card.Content
             class="flex aspect-square items-center justify-center p-6"
           >
-            <Counter />
+            <Counter count={$counterCount} />
           </Card.Content>
         </Card.Root>
       </div>

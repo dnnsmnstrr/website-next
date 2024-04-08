@@ -4,8 +4,9 @@
 </script>
 
 <script>
+  export let ArenaSize = 200
   let DraggableX = 20, DraggableY = 20, DraggableWidth = 80, DraggableHeight = 30
-  let ArenaWidth = 400, ArenaHeight = 400
+  let ArenaWidth = ArenaSize, ArenaHeight = ArenaSize
 
   function onDragMove (x,y, dx,dy) { DraggableX = x; DraggableY = y }
   function onDragEnd  (x,y, dx,dy) { DraggableX = x; DraggableY = y }

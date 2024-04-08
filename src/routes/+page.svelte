@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { WEBSITE_NAME } from '$lib/config';
 	import { draggableAction, resizableAction } from 'svelte-legos';
-	import Counter from './Counter.svelte';
+	import Counter from './playground/Counter.svelte';
 	import WindowButtons from '$lib/components/WindowButtons.svelte';
 	import * as Card from '$lib/components/ui/card';
 	import File from '$lib/components/File.svelte';
