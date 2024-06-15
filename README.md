@@ -12,6 +12,13 @@ npm run dev
 npm run dev -- --open
 ```
 
+Env:
+
+```
+PUBLIC_ALGOLIA_API_ID=
+PUBLIC_ALGOLIA_API_KEY=
+```
+
 ## Building
 
 To create a production version of your app:
