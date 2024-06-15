@@ -160,6 +160,12 @@
     if (['Escape', '/'].includes(e.key) && $showHelp) {
       $showHelp = false;
     }
+    if ($page.url.pathname === '/redirects') {
+      const input = document.querySelector('input')
+      if (input && input.focus){
+        input.focus()
+      }
+    }
     lastKey = e.key;
   }
 
