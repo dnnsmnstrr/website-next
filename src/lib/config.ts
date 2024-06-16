@@ -33,16 +33,18 @@ export const links: Record<string, string> = {
 	routinehub: 'https://routinehub.co/user/' + USERNAME_SHORT,
 	imdb: 'https://www.imdb.com/user/ur31201407',
 	mailto: 'mailto:' + EMAIL,
-  cv: "https://cv.muensterer.tech"
+    cv: "https://cv.muensterer.tech"
 };
 
 export const descriptions = [
-  { name: '🤖💻📱⌚🎧', href: links.yat },
-	'💻 Software Developer',
+    { name: '🤖💻📱⌚🎧', href: links.yat },
+	{ name: '💻 Software Developer', href: links.cv },
 	'🤖 Builder of Things',
 	'📱 Coder of Apps',
 	'🍕 Pizza lover',
-	{ name: '🎧 Music enthusiast', href: links.spotify}
+    { name: '💚 Backer of Projects', href: links.kickstarter },
+    { name: '🎧 Music enthusiast', href: links.spotify},
+    { name: '📺 Watcher of Movies', href: links.imdb},
 ];
 
 export const defaultColors = {
