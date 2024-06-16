@@ -26,7 +26,7 @@
 
 <div class="flex items-start justify-between">
   <Heading>Redirects</Heading>
-  <Input placeholder="Search..." type="search" class="w-52 mt-2" bind:value={filterQuery} />
+  <Input placeholder="Type to search..." type="search" class="w-52 mt-2" bind:value={filterQuery} />
 </div>
 
 <Card.Root class="max-h-[75vh] overflow-scroll">
@@ -42,7 +42,7 @@
     </Table.Header>
     <Table.Body>
       {#each filteredRedirects as redirect}
-        <Table.Row on:click={() => handleRedirect(redirect)}>
+        <Table.Row on:click={() => handleRedirect(redirect)} class="cursor-pointer">
           <Table.Cell class="font-medium">{redirect.name}</Table.Cell>
           <Table.Cell>{redirect.description || '-'}</Table.Cell>
           <Table.Cell>{redirect.aliases?.join(', ') || '-'}</Table.Cell>
