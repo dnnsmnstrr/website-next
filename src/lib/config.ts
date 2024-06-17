@@ -27,6 +27,7 @@ export const links: Record<string, string> = {
 	telegram: 'https://t.me/' + USERNAME_SHORT,
 	bereal: 'https://bere.al/' + USERNAME_SHORT,
 	tiktok: 'https://www.tiktok.com/@' + USERNAME_SHORT,
+	makerer: 'https://www.tiktok.com/@dennis.makerer',
 	paypal: 'https://www.paypal.com/paypalme/' + USERNAME_LONG,
 	kickstarter: 'https://www.kickstarter.com/profile/' + USERNAME_LONG,
 	steam: 'https://steamcommunity.com/id/' + USERNAME_SHORT,
@@ -39,7 +40,7 @@ export const links: Record<string, string> = {
 export const descriptions = [
     { name: '🤖💻📱⌚🎧', href: links.yat },
 	{ name: '💻 Software Developer', href: links.cv },
-	'🤖 Builder of Things',
+	{ name: '🤖 Builder of Things', href: links.makerer },
 	'📱 Coder of Apps',
 	'🍕 Pizza lover',
     { name: '💚 Backer of Projects', href: links.kickstarter },
