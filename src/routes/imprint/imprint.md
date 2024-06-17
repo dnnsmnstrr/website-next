@@ -12,7 +12,7 @@ Kontakt:
 
 ## Social Media
 
-Dieses Impressum gilt auch für folgende Social-Media-Präsenzen und Onlineprofile:
+Dieses Impressum gilt auch für die Inhalte folgender Social-Media-Präsenzen und Onlineprofile:
 - Facebook ([dennismuensterer](https://facebook.com/dennismuensterer))
 - LinkedIn ([dennismuensterer](https://www.linkedin.com/in/dennismuensterer))
 - Twitter ([dnnsmnstrr](https://twitter.com/dnnsmnstrr))

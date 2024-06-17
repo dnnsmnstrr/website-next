@@ -1,12 +1,15 @@
 <script>
   import * as Card from "$lib/components/ui/card";
   import * as Avatar from "$lib/components/ui/avatar";
-	import { NAME_ABBREVIATION, OWNER_NAME, descriptions } from "$lib/config";
+	import { NAME_ABBREVIATION, OWNER_NAME, descriptions, links } from "$lib/config";
   import Typewriter from "svelte-typewriter";
+	import { Button } from "./ui/button";
+
+  const imageSize = 24
 </script>
 
-  <Card.Header class="flex flex-row items-center gap-5 flex-wrap">
-    <Avatar.Root class="h-16 w-16">
+  <Card.Header class="flex flex-row items-center justify-start gap-6 flex-wrap mt-6">
+    <Avatar.Root class="h-{imageSize} w-{imageSize}">
       <Avatar.Image src="https://github.com/dnnsmnstrr.png" alt="@dnnsmnstrr" />
       <Avatar.Fallback>{NAME_ABBREVIATION}</Avatar.Fallback>
     </Avatar.Root>
@@ -23,5 +26,8 @@
           {/each}
         </Typewriter>
       </Card.Description>
+      <Card.Footer class="p-0 pt-2">
+        <Button href={links.cv} size="sm">Find out more...</Button>
+      </Card.Footer>
     </div>
   </Card.Header>

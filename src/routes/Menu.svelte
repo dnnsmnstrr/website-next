@@ -17,9 +17,9 @@
   let showPicker = false
   const bookmarks: Array<BookmarkItem[] | BookmarkItem> = [
     [
+      { name: 'Curriculum Vitae', href: links.cv },
+      { name: 'Redirects' },
       { name: 'Imprint' },
-      { name: 'About' },
-      { name: 'Redirects' }
     ],
     { name: 'Social', sub: [
       { name: 'Instagram', href: links.instagram },
@@ -143,29 +143,27 @@
 	<Menubar.Menu>
 		<Menubar.Trigger class="hidden md:block">Bookmarks</Menubar.Trigger>
 		<Menubar.Content>
-      {#each bookmarks as bookmark}
-        {#if Array.isArray(bookmark)}
-          {#each bookmark as bookmarkItem}
-            <Menubar.Link {...bookmarkItem} />
-          {/each}
-          <Menubar.Separator />
-        {:else if bookmark.sub}
-          <Menubar.Sub>
-            <Menubar.SubTrigger>{bookmark.name}</Menubar.SubTrigger>
-            <Menubar.SubContent>
-              {#each bookmark.sub as bookmarkItem}
-                <Menubar.Link {...bookmarkItem} />
-              {/each}
-            </Menubar.SubContent>
-          </Menubar.Sub>
-        {:else}
-          <Menubar.Link {...bookmark} />
-        {/if}
-      {/each}
-			<Menubar.Separator />
-			<Menubar.Item href="https://muensterer.lol" target="_blank">Current Homepage</Menubar.Item>
-		</Menubar.Content>
-	</Menubar.Menu>
+			{#each bookmarks as bookmark}
+				{#if Array.isArray(bookmark)}
+				{#each bookmark as bookmarkItem}
+					<Menubar.Link {...bookmarkItem} />
+				{/each}
+				<Menubar.Separator />
+				{:else if bookmark.sub}
+				<Menubar.Sub>
+					<Menubar.SubTrigger>{bookmark.name}</Menubar.SubTrigger>
+					<Menubar.SubContent>
+					{#each bookmark.sub as bookmarkItem}
+						<Menubar.Link {...bookmarkItem} />
+					{/each}
+					</Menubar.SubContent>
+				</Menubar.Sub>
+				{:else}
+				<Menubar.Link {...bookmark} />
+				{/if}
+			{/each}
+	    </Menubar.Content>
+    </Menubar.Menu>
 
   <Menubar.Menu>
 		<Menubar.Trigger>Help</Menubar.Trigger>

@@ -45,6 +45,7 @@
 	import { isMobile, reloadPage, scrollToBottom, scrollToTop, toggleFullscreen } from "$lib/browser";
   import { confettiAction, eyeDropperAction } from "svelte-legos";
   import { toast } from "svelte-sonner";
+  import confetti from "canvas-confetti";
 	import List from "$lib/components/typography/List.svelte";
 	import Kbd from "$lib/components/typography/Kbd.svelte";
 	import { page } from "$app/stores";
@@ -100,6 +101,41 @@
     }
     if (konamiIndex === konamiCode.length) {
       debugLog('That\'s what I call a Pro Gamer Move!')
+      var defaults = {
+        spread: 360,
+        ticks: 50,
+        gravity: 0,
+        decay: 0.94,
+        startVelocity: 30,
+        colors: ['FFE400', 'FFBD00', 'E89400', 'FFCA6C', 'FDFFB8']
+      };
+
+      function shoot() {
+        confetti({
+          ...defaults,
+          particleCount: 40,
+          scalar: 1.2,
+          shapes: ['star']
+        });
+
+        confetti({
+          ...defaults,
+          particleCount: 10,
+          scalar: 0.75,
+          shapes: ['circle']
+        });
+      }
+      // confetti({
+      //   type: "simple",
+      //   particleCount: 100,
+      //   spread: 70,
+      //   origin: { y: 0.5, x: 0.5 },
+      // })
+      setTimeout(shoot, 0);
+      setTimeout(shoot, 150);
+      setTimeout(shoot, 300);
+      setTimeout(shoot, 450);
+      setTimeout(shoot, 600);
     }
 
     // meta
