@@ -8,7 +8,7 @@
 </script>
 
   <Card.Header class="flex flex-row items-center justify-start gap-6 flex-wrap mt-6">
-    <Avatar.Root class="h-28 w-28">
+    <Avatar.Root class="h-24 w-24">
       <Avatar.Image src="https://github.com/dnnsmnstrr.png" alt="@dnnsmnstrr" />
       <Avatar.Fallback>{NAME_ABBREVIATION}</Avatar.Fallback>
     </Avatar.Root>
