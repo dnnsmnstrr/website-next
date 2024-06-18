@@ -7,13 +7,32 @@
 	import List from "$lib/components/typography/List.svelte";
 	import Link from "$lib/components/typography/Link.svelte";
 	import { counterCount } from "$lib/stores/playground";
+  import { spring } from 'svelte/motion';
+	import { onMount } from "svelte";
 
+  const cursor = spring({ x: 0, y: 0 }, {
+		stiffness: 0.05,
+		damping: 0.25,
+    precision: 0.5
+	});
+  function handleMouseMove(event?: MouseEvent) {
+    if (event) {
+      cursor.set({ x: event.screenX, y: event.screenY });
+    }
+  }
+  
+  onMount(() => {
+    document.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+    };
+  })
   const basis = 'basis-full md:basis-1/2 lg:basis-1/3'
 
 </script>
 
 <Carousel.Root
-  class="w-full"
+  class="w-full pt-16"
   opts={{
     align: "start",
     loop: true,
@@ -78,6 +97,23 @@
             class="flex aspect-square items-center justify-center p-6"
           >
             <Counter count={$counterCount} />
+          </Card.Content>
+        </Card.Root>
+      </div>
+    </Carousel.Item>
+
+    <Carousel.Item class="{basis} h-full">
+      <div class="p-2 sm:p-0.5 h-full">
+        <Card.Root class="min-h-[500px]">
+          <Card.Header>
+            <Card.Title>Cursor Tracking</Card.Title>
+          </Card.Header>
+          <Card.Content
+            class="flex items-center justify-center p-6 relative h-80 w-full inset-0"
+          >
+            <div class="absolute rounded-full bg-primary w-4 h-4" style="left: {Math.round($cursor.x - 220)}px; top:{Math.round($cursor.y - 320)}px" />
+            x: {Math.round($cursor.x - 220)}px <br>
+            y: {Math.round($cursor.y - 320)}px
           </Card.Content>
         </Card.Root>
       </div>

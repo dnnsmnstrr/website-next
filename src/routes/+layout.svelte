@@ -139,7 +139,9 @@
 	<main
     class="w-full h-full max-h-screen flex-grow sm:px-16 pt-4 overflow-y-auto print:max-h-none inset-0 {bgClass} [background-size:16px_16px]"
   >
+    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
     <div 
+      role="region"
       on:mousedown={() => setMaskSize(50)}
       on:mouseup={() => setMaskSize(100)}
       class="absolute inset-0 top-20 pointer-events-none transition-[background-position] duration-100"
