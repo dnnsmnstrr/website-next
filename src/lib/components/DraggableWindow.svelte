@@ -10,7 +10,7 @@
 	import { cn } from '$lib/utils';
 	import { filePosition } from '$lib/stores/desktop';
 
-	const minHeight = 298;
+	const minHeight = 300;
 	const minWidth = 210;
 	const fileSize = 50;
 	const padding = 20;

@@ -5,11 +5,10 @@
   import Typewriter from "svelte-typewriter";
 	import { Button } from "./ui/button";
 
-  const imageSize = 24
 </script>
 
   <Card.Header class="flex flex-row items-center justify-start gap-6 flex-wrap mt-6">
-    <Avatar.Root class="h-{imageSize} w-{imageSize}">
+    <Avatar.Root class="h-28 w-28">
       <Avatar.Image src="https://github.com/dnnsmnstrr.png" alt="@dnnsmnstrr" />
       <Avatar.Fallback>{NAME_ABBREVIATION}</Avatar.Fallback>
     </Avatar.Root>
