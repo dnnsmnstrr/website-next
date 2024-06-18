@@ -21,7 +21,7 @@ Dieses Impressum gilt auch für die Inhalte folgender Social-Media-Präsenzen un
 - [Universe](https://dnnsmnstrr.onuniverse.com/)
 
 ## Datenschutzerklärung (DSGVO)
-Auf dieser Webseite werden keine personenbezogenen Daten erhoben, gespeichert oder verarbeitet. Es werden keine Cookies verwendet.
+Auf dieser Webseite werden keine personenbezogenen Daten erhoben, gespeichert oder verarbeitet. Es werden keine Tracking-Cookies verwendet.
 
 ## Data Protection Policy (GDPR)
 This website does not collect, store or process Personally Identifiable Information (PII). This website does not require the use of cookies.
@@ -32,7 +32,7 @@ Diese Website wird mit [Vercel](https://vercel.com/) betrieben. Deren Datenschut
 Teile dieser Website werden auf [GitHub](https://www.github.com/) mit [GitHub Pages](https://help.github.com/articles/what-is-github-pages/) gehostet. Die GitHub Datenschutzerklärung ist [hier](https://docs.github.com/de/site-policy/privacy-policies/github-privacy-statement) hinterlegt.
 
 
-Um etwaige auftretende Fehler zu identifizieren, wird die Monitoring-Software [Sentry](https://sentry.io) eingesetzt. Hierbei  werden lediglich Informationen zum besseren Nachvollziehen der Fehler übertragen, jedoch keine persönlichen Daten. Die Datenschutzerklärung von Sentry findet sich [hier](https://sentry.io/privacy/).
+Um etwaige Fehler zu identifizieren, wird die Monitoring-Software [Sentry](https://sentry.io) eingesetzt. Hierbei  werden lediglich Informationen zum besseren Nachvollziehen aufgetretener Fehler übertragen, jedoch keine persönlichen Daten. Die Datenschutzerklärung von Sentry findet sich [hier](https://sentry.io/privacy/).
 
 ## Third Party Inclusion
 This website runs on [Vercel](https://vercel.com/). Their privacy policy can be found [here](https://vercel.com/legal/privacy-policy).

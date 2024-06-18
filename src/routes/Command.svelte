@@ -136,6 +136,10 @@
       setTimeout(shoot, 300);
       setTimeout(shoot, 450);
       setTimeout(shoot, 600);
+
+      toast.success("Achievement Unlocked: Konami Code", {
+        description: "Congratulations, you're a nerd!",
+      })
     }
 
     // meta
