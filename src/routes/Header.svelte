@@ -33,7 +33,7 @@
 <header class="flex justify-between gap-4">
 	<nav class="hidden sm:flex items-center">
     <a href="/">
-      <enhanced:img src="../../static/muenstererOS.png" alt="muenstererOS" class="w-8" />
+      <enhanced:img src="../../static/muenstererOS.png" alt="muenstererOS" class="w-8 min-w-6" />
     </a>
 		<Menu />
 	</nav>

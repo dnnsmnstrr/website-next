@@ -17,6 +17,7 @@ export const links: Record<string, string> = {
 	yat: 'https://y.at/🤖💻📱⌚🎧',
 	spotify: 'https://open.spotify.com/user/' + USERNAME_LONG,
 	github: 'https://github.com/' + USERNAME_SHORT,
+	source: 'https://github.com/' + USERNAME_SHORT + '/muenstererOS',
 	instagram: 'https://www.instagram.com/' + USERNAME_SHORT,
 	twitter: 'https://twitter.com/' + USERNAME_SHORT,
 	x: 'https://x.com/' + USERNAME_SHORT,
@@ -35,7 +36,7 @@ export const links: Record<string, string> = {
 	imdb: 'https://www.imdb.com/user/ur31201407',
 	mailto: 'mailto:' + EMAIL,
     cv: "https://cv.muensterer.tech"
-};
+} as const;
 
 export const descriptions = [
     { name: '🤖💻📱⌚🎧', href: links.yat },

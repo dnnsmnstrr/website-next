@@ -16,16 +16,32 @@
 	const padding = 20;
 	export let width = 0;
 	export let height = 0;
-	const INITIAL_WIDTH = 390;
-	let DraggableWidth = INITIAL_WIDTH;
+	$: defaultWidth = width < 640 ? minWidth : 390;
+	let DraggableWidth = defaultWidth || 250;
 	let DraggableHeight = minHeight;
 	let DraggableX = 0;
 	let DraggableY = 0;
 
 	$: if (width || height) {
+		// switch to vertical layout on mobile
+		if (width < 640 && DraggableWidth > defaultWidth) {
+			console.log(width)
+			DraggableWidth = minWidth
+			DraggableHeight = minHeight
+		} else if (width > 640 && DraggableWidth < defaultWidth) {
+			DraggableWidth = defaultWidth
+			DraggableHeight = minHeight
+		}
+
+		// initial positioning
 		if (!DraggableX) {
 			DraggableX = width / 2 - DraggableWidth / 2;
 		}
+		if (!DraggableY) {
+			DraggableY = height / 3 - DraggableHeight / 2;
+		}
+
+		// keep window in view while changing window size
 		if (DraggableX + DraggableWidth > width) {
 			if (width - DraggableX > minWidth) {
 				DraggableWidth = width - DraggableX;
@@ -33,14 +49,11 @@
 				DraggableX = width - DraggableWidth - padding;
 			}
 		}
-		if (!DraggableY) {
-			DraggableY = height / 3 - DraggableHeight / 2;
-		}
 		if (DraggableY + DraggableHeight > height) {
 			DraggableHeight = height - DraggableHeight;
 		}
 
-		//file
+		// keep file in view
 		if (width < $filePosition.x + fileSize) {
 			$filePosition.x = width - (fileSize + 20);
 		}
@@ -100,7 +113,7 @@
 					class="absolute left-0 top-0 block h-10 w-full cursor-grab"
           role="application"
 					on:dblclick={() => {
-						DraggableWidth = INITIAL_WIDTH;
+						DraggableWidth = defaultWidth;
 						DraggableHeight = minHeight;
 						DraggableX = width / 2 - DraggableWidth / 2;
 						DraggableY = height / 3 - DraggableHeight / 2;

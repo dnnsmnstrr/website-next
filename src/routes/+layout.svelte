@@ -46,6 +46,7 @@
 
   $: innerWidth = 0
   $: innerHeight = 0
+  
   let timeout: number|undefined = undefined;
   function handleMouseMove(event?: MouseEvent) {
     // console.log(event)
