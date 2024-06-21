@@ -31,6 +31,7 @@
 	ScrollText,
 	Search,
 	Signpost,
+	Github,
   } from "lucide-svelte";
   import * as Command from "$lib/components/ui/command";
   import * as Dialog from "$lib/components/ui/dialog";
@@ -125,12 +126,6 @@
           shapes: ['circle']
         });
       }
-      // confetti({
-      //   type: "simple",
-      //   particleCount: 100,
-      //   spread: 70,
-      //   origin: { y: 0.5, x: 0.5 },
-      // })
       setTimeout(shoot, 0);
       setTimeout(shoot, 150);
       setTimeout(shoot, 300);
@@ -200,7 +195,7 @@
     if (['Escape', '/'].includes(e.key) && $showHelp) {
       $showHelp = false;
     }
-    if ($page.url.pathname === '/redirects') {
+    if ($page.url.pathname === '/redirects' && !$isCommandActive) {
       const input = document.querySelector('input')
       if (input && input.focus){
         input.focus()
@@ -272,11 +267,12 @@
   }
 
   const externalLinks: CommandData[] = [
+    { name: "GitHub", icon: Github, url: links.github },
     { name: "Instagram", icon: Instagram, url: links.instagram },
     { name: "Spotify", aliases: 'music playlists', icon: Music, url: links.spotify },
     { name: "Telegram", aliases: 'messages chats', icon: Send, url: links.telegram },
     { name: "LinkedIn", aliases: 'work professional', icon: Linkedin, url: links.linkedin },
-    { name: "Twitter/X", icon: Twitter, url: links.x },
+    { name: "Twitter / 𝕏", icon: Twitter, url: links.x },
     { name: "CV", aliases: 'resume curriculum vitae', icon: ScrollText, url: links.cv },
   ].map(enrichLink);
 

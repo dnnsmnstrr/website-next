@@ -12,17 +12,20 @@
   import { tweened } from 'svelte/motion';
 	import { cubicOut } from 'svelte/easing';
 
+  $: innerWidth = 0
+  $: innerHeight = 0
+
   const cursor = spring({ x: 0, y: 0 }, {
 		stiffness: 0.05,
 		damping: 0.25,
     precision: 0.5
 	});
 
-  let innerRadius = tweened(300, {
+  let innerRadius = tweened(innerWidth, {
 		duration: 300,
 		easing: cubicOut
 	});
-  let outerRadius = tweened(500, {
+  let outerRadius = tweened(innerWidth + 200, {
 		duration: 300,
 		easing: cubicOut
 	});
@@ -44,27 +47,27 @@
     maskHeight.set(y || x, { duration })
   }
 
-  $: innerWidth = 0
-  $: innerHeight = 0
+  
   
   let timeout: number|undefined = undefined;
-  function handleMouseMove(event?: MouseEvent) {
-    // console.log(event)
+  function handleMouseMove(event?: MouseEvent & { timeout?: number, duration?: number }) {
+    console.log(event)
     
     clearTimeout(timeout)
     switch ($page.url.pathname) {
       case '/':
         if (event) {
           // focus on cursor
-          setMaskSize(event?.buttons ? 50 : 100)
-          changeRadius(event?.buttons ? 50 : 100)
+          const size = event?.buttons ? 50 : 100
+          setMaskSize(size, size, event.duration)
+          changeRadius(size, size * 2, event.duration)
           
           timeout = setTimeout(() => {
             // reset after inactivity
             setMaskSize(300, 200)
             changeRadius(300, 500)
-            cursor.set({ x: innerWidth / 2, y: innerHeight / 3 });
-          }, 1200)
+            cursor.set({ x: innerWidth / 2, y: innerHeight / 3 }, { soft: true });
+          }, event.timeout || 1200)
           cursor.set({ x: event.clientX, y: event.clientY - 100 });
         } else {
           cursor.set({ x: innerWidth / 2, y: innerHeight / 3 });
@@ -88,15 +91,20 @@
         // full page content, no masking
         cursor.set({ x: innerWidth / 2, y: innerHeight / 2 });
         setMaskSize(300, 200)
-        changeRadius(1000, 1200)
+        changeRadius(innerWidth, innerWidth + 200)
         break;
     }
   }
 
   onMount(() => {
     cursor.set({ x: innerWidth / 2, y: innerHeight / 3 }); // initial positioning around hero window
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('dragover', handleMouseMove);
+    handleMouseMove()
+    setTimeout(() => {
+      // wait a bit before following cursor after page is loaded
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('dragover', handleMouseMove);
+    }, 1500)
+    
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('dragover', handleMouseMove);
@@ -113,6 +121,7 @@
     document.documentElement.setAttribute("data-theme", $mode)
     debugLog('Theme was set to ' + $mode);
     resetColors();
+    // handleMouseMove({ clientX: innerWidth / 2, clientY: -100, timeout: 0 } as MouseEvent & { timeout: number })
   }
   $: {
     debugLog(`${$isCommandActive ? 'Opening' : 'Closing'} command window`)

@@ -24,31 +24,33 @@
   }
 </script>
 
-<div class="flex items-start justify-between">
-  <Heading>Redirects</Heading>
-  <Input placeholder="Type to search..." type="search" class="w-52 mt-2" bind:value={filterQuery} />
-</div>
-
-<Card.Root class="max-h-[75vh] overflow-scroll">
-  <Table.Root class="mb-4">
-    <Table.Caption>{filterQuery ? `Matching redirects: ${filteredRedirects.length}, ` : ''}Total: {data.redirects.length}</Table.Caption>
-    <Table.Header class="sticky top-0 bg-card">
-      <Table.Row>
-        <Table.Head class="w-[100px]">Name</Table.Head>
-        <Table.Head>Description</Table.Head>
-        <Table.Head>Aliases</Table.Head>
-        <Table.Head class="text-right">URL</Table.Head>
-      </Table.Row>
-    </Table.Header>
-    <Table.Body>
-      {#each filteredRedirects as redirect}
-        <Table.Row on:click={() => handleRedirect(redirect)} class="cursor-pointer">
-          <Table.Cell class="font-medium">{redirect.name}</Table.Cell>
-          <Table.Cell>{redirect.description || '-'}</Table.Cell>
-          <Table.Cell>{redirect.aliases?.join(', ') || '-'}</Table.Cell>
-          <Table.Cell class="text-right">{redirect.url || '/' + redirect.name.toLocaleLowerCase()}</Table.Cell>
+<div class="container">
+  <div class="flex items-start justify-between">
+    <Heading>Redirects</Heading>
+    <Input placeholder="Type to search..." type="search" class="w-52 mt-2" bind:value={filterQuery} />
+  </div>
+  
+  <Card.Root class="max-h-[75vh] overflow-scroll">
+    <Table.Root class="mb-4">
+      <Table.Caption>{filterQuery ? `Matching redirects: ${filteredRedirects.length}, ` : ''}Total: {data.redirects.length}</Table.Caption>
+      <Table.Header class="sticky top-0 bg-card">
+        <Table.Row>
+          <Table.Head class="w-[100px]">Name</Table.Head>
+          <Table.Head>Description</Table.Head>
+          <Table.Head>Aliases</Table.Head>
+          <Table.Head class="text-right">URL</Table.Head>
         </Table.Row>
-      {/each}
-    </Table.Body>
-  </Table.Root>
-</Card.Root>
+      </Table.Header>
+      <Table.Body>
+        {#each filteredRedirects as redirect}
+          <Table.Row on:click={() => handleRedirect(redirect)} class="cursor-pointer">
+            <Table.Cell class="font-medium">{redirect.name}</Table.Cell>
+            <Table.Cell>{redirect.description || '-'}</Table.Cell>
+            <Table.Cell>{redirect.aliases?.join(', ') || '-'}</Table.Cell>
+            <Table.Cell class="text-right">{redirect.url || '/' + redirect.name.toLocaleLowerCase()}</Table.Cell>
+          </Table.Row>
+        {/each}
+      </Table.Body>
+    </Table.Root>
+  </Card.Root>
+</div>

@@ -13,6 +13,8 @@
   import type { SuperValidated } from "sveltekit-superforms";
   import { mode, setMode, resetMode, } from "mode-watcher";
 	import { debug } from "$lib/stores/app";
+	import { Bug } from "lucide-svelte";
+	import { Separator } from "$lib/components/ui/separator";
 
   let form: SuperValidated<SettingsSchema>
 
@@ -51,16 +53,16 @@
       <Form.Validation />
     </Form.Item>
   </Form.Field>
-
+  <Separator />
   <Form.Field {config} name="debug">
     <Form.Item
-      class="flex flex-row items-start space-x-3 space-y-0"
+      class="flex flex-row items-start space-x-3 space-y-0 pt-6"
     >
       <Form.Checkbox checked={$debug} onCheckedChange={(value) => $debug = !!value}/>
       <div class="space-y-1 leading-none">
-        <Form.Label>Enable debug mode</Form.Label>
+        <Form.Label class="flex items-center gap-2 -mt-0.5">Debug mode <Bug class="w-4" /></Form.Label>
         <Form.Description>
-          This will enable more verbose logging in the console.
+          This will cause more verbose logging in the console.
         </Form.Description>
       </div>
     </Form.Item>

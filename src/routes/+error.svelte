@@ -2,10 +2,10 @@
 	import { page } from '$app/stores';
 	import { getRedirect } from '$lib/redirect';
 	import { redirects } from '$lib/redirects';
-  import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
 	import { debugLog } from '$lib/stores/app';
+
   onMount(() => {
     const query = $page.url.pathname.replace('/', '')
     const foundRedirect = getRedirect(query, redirects)

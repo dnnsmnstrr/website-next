@@ -38,7 +38,7 @@
 	"dependencies": {
 		"@docsearch/js": "^3.5.2",
 		"@sentry/sveltekit": "^7.100.1",
-		"bits-ui": "^0.17.0",
+		"bits-ui": "^0.21.10",
 		"clsx": "^2.1.0",
 		"cmdk-sv": "^0.0.13",
 		"embla-carousel-svelte": "^8.0.0-rc22",

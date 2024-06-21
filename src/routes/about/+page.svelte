@@ -4,6 +4,7 @@
 	import List from "$lib/components/typography/List.svelte";
 	import Button from "$lib/components/ui/button/button.svelte";
   import * as Card from "$lib/components/ui/card";
+  import { ScrollArea } from "$lib/components/ui/scroll-area";
 	import { OWNER_NAME, links } from "$lib/config";
 	import { Github } from "lucide-svelte";
 </script>
@@ -13,7 +14,7 @@
 	<meta name="description" content="About this app" />
 </svelte:head>
 
-<div class="container p-12">
+<div class="container md:p-12 pb-8">
   <Heading>About</Heading>
 
 	<Card.Root class="max-w-xl">
@@ -31,12 +32,14 @@
       <span>
         Some other the projects being used:
       </span>
-      <List>
-        <li><Link href="https://tailwindcss.com/">TailwindCSS</Link></li>
-        <li><Link href="https://lucide.dev/icons/">Lucide Icons</Link></li>
-        <li><Link href="https://svelte-legos.surge.sh/">Svelte Legos</Link></li>
-        <li><Link href="https://www.npmjs.com/package/svelte-typewriter">Svelte Typewriter</Link></li>
-      </List>
+      <ScrollArea class="h-32 md:h-36 rounded-md border mt-4">
+        <List class="my-0">
+          <li><Link href="https://tailwindcss.com/">TailwindCSS</Link></li>
+          <li><Link href="https://lucide.dev/icons/">Lucide Icons</Link></li>
+          <li><Link href="https://svelte-legos.surge.sh/">Svelte Legos</Link></li>
+          <li><Link href="https://www.npmjs.com/package/svelte-typewriter">Svelte Typewriter</Link></li>
+        </List>
+      </ScrollArea>
     </Card.Content>
     <Card.Footer class="justify-end">
       <Button href={links.source}>
