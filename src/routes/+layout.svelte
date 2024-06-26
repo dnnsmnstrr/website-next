@@ -14,18 +14,18 @@
 
   $: innerWidth = 0
   $: innerHeight = 0
-
-  const cursor = spring({ x: 0, y: 0 }, {
+  console.log('w', innerWidth, window)
+  const cursor = spring({ x: window.innerWidth / 2 || 0, y: innerHeight / 2 || 0 }, {
 		stiffness: 0.05,
 		damping: 0.25,
     precision: 0.5
 	});
 
-  let innerRadius = tweened(200, {
+  let innerRadius = tweened($page.url.pathname !== '/' ? window.innerWidth : 200, {
 		duration: 300,
 		easing: cubicOut
 	});
-  let outerRadius = tweened(300, {
+  let outerRadius = tweened($page.url.pathname !== '/' ? window.innerWidth : 300, {
 		duration: 300,
 		easing: cubicOut
 	});
@@ -97,7 +97,14 @@
   }
 
   onMount(() => {
-    cursor.set({ x: innerWidth / 2, y: innerHeight / 3 }); // initial positioning around hero window
+    if ($page.url.pathname === '/') {
+      cursor.set({ x: innerWidth / 2, y: innerHeight / 3 }); // initial positioning around hero window
+    } else {
+      console.log($page.url.pathname, innerWidth)
+      cursor.set({ x: innerWidth / 2, y: innerHeight / 2 });
+      changeRadius(innerWidth * 4, innerWidth * 4, 0)
+    }
+    handleMouseMove()
     setTimeout(() => {
       // wait a bit before following cursor after page is loaded
       document.addEventListener('mousemove', handleMouseMove);

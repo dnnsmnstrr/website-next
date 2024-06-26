@@ -13,7 +13,7 @@ export const USERNAME_SHORT = disemvowel(USERNAME_LONG);
 export const API_URL = 'https://dnnsmnstrr.vercel.app';
 export const DEFAULT_URL = 'https://dnnsmnstrr.github.io';
 
-export const links: Record<string, string> = {
+export const links = {
 	yat: 'https://y.at/🤖💻📱⌚🎧',
 	spotify: 'https://open.spotify.com/user/' + USERNAME_LONG,
 	github: 'https://github.com/' + USERNAME_SHORT,

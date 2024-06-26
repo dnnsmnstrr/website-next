@@ -149,6 +149,9 @@
         case 'k':
           $isCommandActive = !$isCommandActive;
           break;
+        case 'm':
+          toggleMode()
+          break;        
         case 'r':
           reloadPage();
           break

@@ -14,8 +14,10 @@
 	const minWidth = 210;
 	const fileSize = 50;
 	const padding = 20;
+	const breakpoint = 640
 	export let width = 0;
 	export let height = 0;
+	let dragging = false;
 	$: defaultWidth = width < 640 ? minWidth : 390;
 	let DraggableWidth = defaultWidth || 250;
 	let DraggableHeight = minHeight;
@@ -24,11 +26,11 @@
 
 	$: if (width || height) {
 		// switch to vertical layout on mobile
-		if (width < 640 && DraggableWidth > defaultWidth) {
+		if (width < breakpoint && DraggableWidth > defaultWidth && !dragging) {
 			console.log(width)
 			DraggableWidth = minWidth
 			DraggableHeight = minHeight
-		} else if (width > 640 && DraggableWidth < defaultWidth) {
+		} else if (width > breakpoint && DraggableWidth < defaultWidth && !dragging) {
 			DraggableWidth = defaultWidth
 			DraggableHeight = minHeight
 		}
@@ -58,6 +60,7 @@
 			$filePosition.x = width - (fileSize + 20);
 		}
 	}
+
 	function handleDragChange(x: number, y: number) {
 		if (x) {
 			DraggableX = x;
@@ -77,18 +80,24 @@
 	}
 
 	function startResizing() {
+		dragging = true;
 		return { x: DraggableWidth, y: DraggableHeight };
 	}
 	function continueResizing(x: number, y: number) {
-		DraggableWidth = x;
+		if (x > defaultWidth) {
+			DraggableWidth = x;
+		}
 		DraggableHeight = y;
 		// TODO: enable the following while option is pressed to resize around the center
 		// DraggableX = width / 2 - DraggableWidth / 2
 		// DraggableY = height / 3 - DraggableHeight / 2
 	}
 	function finishResizing(x: number, y: number) {
-		DraggableWidth = x;
+		if (x > defaultWidth) {
+			DraggableWidth = x;
+		}
 		DraggableHeight = y;
+		dragging = false;
 	}
 </script>
 
@@ -125,7 +134,7 @@
 					<slot />
 				</div>
 				<div
-					class="absolute bottom-0 right-0 block h-8 w-8 cursor-nwse-resize"
+					class="hidden absolute bottom-0 right-0 md:block h-8 w-8 cursor-nwse-resize"
 					use:asDraggable={{
 						onDragStart: startResizing,
 						onDragMove: continueResizing,

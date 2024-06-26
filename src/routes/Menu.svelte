@@ -135,7 +135,7 @@
 			<Menubar.Separator />
 			<Menubar.Item on:click={toggleFullscreen}>{isBrowserInFullscreen() ? 'Exit' : 'Enter'} Full Screen <Menubar.Shortcut>⌘F</Menubar.Shortcut></Menubar.Item>
       <Menubar.Item on:click={toggleMode}>
-				Toggle Dark Mode <Menubar.Shortcut>⌘M</Menubar.Shortcut>
+				Toggle Dark Mode <Menubar.Shortcut>^M</Menubar.Shortcut>
 			</Menubar.Item>
 		</Menubar.Content>
 	</Menubar.Menu>
