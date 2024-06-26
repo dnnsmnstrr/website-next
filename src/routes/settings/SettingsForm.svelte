@@ -15,6 +15,7 @@
 	import { debug } from "$lib/stores/app";
 	import { Bug } from "lucide-svelte";
 	import { Separator } from "$lib/components/ui/separator";
+	import AnimatedToggle from "$lib/components/AnimatedToggle.svelte";
 
   let form: SuperValidated<SettingsSchema>
 
@@ -60,7 +61,12 @@
     >
       <Form.Checkbox checked={$debug} onCheckedChange={(value) => $debug = !!value}/>
       <div class="space-y-1 leading-none">
-        <Form.Label class="flex items-center gap-2 -mt-0.5">Debug mode <Bug class="w-4" /></Form.Label>
+        <Form.Label class="flex items-center gap-2 -mt-0.5">
+          <span class="pb-1.5">Debug mode</span> 
+          <AnimatedToggle visible={$debug}>
+            <Bug class="w-4" />
+          </AnimatedToggle>
+        </Form.Label>
         <Form.Description>
           This will cause more verbose logging in the console.
         </Form.Description>

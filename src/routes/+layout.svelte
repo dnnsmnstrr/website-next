@@ -21,11 +21,11 @@
     precision: 0.5
 	});
 
-  let innerRadius = tweened(innerWidth, {
+  let innerRadius = tweened(200, {
 		duration: 300,
 		easing: cubicOut
 	});
-  let outerRadius = tweened(innerWidth + 200, {
+  let outerRadius = tweened(300, {
 		duration: 300,
 		easing: cubicOut
 	});
@@ -51,7 +51,7 @@
   
   let timeout: number|undefined = undefined;
   function handleMouseMove(event?: MouseEvent & { timeout?: number, duration?: number }) {
-    console.log(event)
+    // console.log(event)
     
     clearTimeout(timeout)
     switch ($page.url.pathname) {
@@ -98,12 +98,11 @@
 
   onMount(() => {
     cursor.set({ x: innerWidth / 2, y: innerHeight / 3 }); // initial positioning around hero window
-    handleMouseMove()
     setTimeout(() => {
       // wait a bit before following cursor after page is loaded
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('dragover', handleMouseMove);
-    }, 1500)
+    }, 1000)
     
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
