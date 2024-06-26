@@ -21,8 +21,8 @@ export function initializeFile(fileSize = 50) {
       height: window.innerHeight
     }
     const padding = 20
-    const randomX = randomNumber(padding, windowSize.width - fileSize - padding)
-    const randomY = randomNumber(padding, windowSize.height - fileSize - padding);
+    const randomX = randomNumber(windowSize.width / 2 - padding, windowSize.width / 2 + padding)
+    const randomY = randomNumber(windowSize.height / 3 - padding, windowSize.height / 3 + padding);
     debugLog("Initializing file to random position", randomX, randomY);
     filePosition.set({
 			x: randomX,

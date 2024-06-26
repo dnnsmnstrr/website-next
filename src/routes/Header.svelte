@@ -1,7 +1,15 @@
 <script lang="ts">
   import {
+	FileQuestion,
+    Gavel,
     Globe,
+    Home,
+    Instagram,
     MenuIcon,
+	Settings,
+	Signpost,
+	Twitter,
+	X,
   } from "lucide-svelte";
   import * as Sheet from "$lib/components/ui/sheet";
   import { Separator } from "$lib/components/ui/separator";
@@ -17,15 +25,15 @@
   let isMobileMenuOpen = false;
   const bookmarks: Array<BookmarkItem[] | BookmarkItem> = [
     [
-      { name: 'Home', href: '/' },
-      { name: 'About', href: '/about' },
-      { name: 'Settings', href: '/settings' },
-      { name: 'Imprint', href: '/imprint' }
+      { name: 'Home', href: '/', icon: Home },
+      { name: 'About', href: '/about', icon: FileQuestion },
+      { name: 'Redirects', href: '/redirects', icon: Signpost },
+      { name: 'Settings', href: '/settings', icon: Settings },
+      { name: 'Imprint', href: '/imprint', icon: Gavel }
     ],
     { name: 'Social', sub: [
-      { name: 'Instagram', href: links.instagram },
-      { name: 'Twitter', href: links.twitter },
-      { name: 'Mastodon', href: links.mastodon },
+      { name: 'Instagram', href: links.instagram, icon: Instagram },
+      { name: 'Twitter', href: links.twitter, icon: Twitter },
     ]}
   ]
 </script>
@@ -44,9 +52,9 @@
           <MenuIcon />
         </Button>
       </Sheet.Trigger>
-      <Sheet.Content side="left">
+      <Sheet.Content side="left" class="w-48">
         <Sheet.Header>
-          <Sheet.Title class="pb-2">
+          <Sheet.Title class="py-2">
             <Heading depth={4}>
               {WEBSITE_NAME}
             </Heading>
@@ -59,10 +67,15 @@
                     <ul>
                       <Button
                         href={bookmarkItem.href}
-                        class="w-full"
+                        class="w-full justify-start"
                         variant="secondary"
                         on:click={() => isMobileMenuOpen = false}
                       >
+                        {#if bookmarkItem.icon}
+                           <!-- content here -->
+                           <svelte:component this={bookmarkItem.icon} class="mr-4 h-4 w-4" />
+                        {/if}
+
                         {bookmarkItem.name}
                       </Button>
                     </ul>

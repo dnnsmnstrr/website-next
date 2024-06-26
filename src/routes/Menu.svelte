@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-  export type BookmarkItem = { name: string, href?: string, sub?: BookmarkItem[] };
+  export type BookmarkItem = { name: string, href?: string, sub?: BookmarkItem[], icon?: ConstructorOfATypedSvelteComponent };
 </script>
 <script lang="ts">
 	import * as Menubar from "$lib/components/ui/menubar";
@@ -9,6 +9,7 @@
 	import { toggleMode } from "mode-watcher";
 	import { debugLog, showHelp } from "$lib/stores/app";
 	import { toast } from "svelte-sonner";
+	import type { SvelteComponent } from "svelte";
 
   // import 'emoji-picker-element'; // causes ReferenceError: requestAnimationFrame is not defined
 	// import type { EmojiClickEvent } from "emoji-picker-element/shared";

@@ -6,6 +6,7 @@
 	import Profile from '$lib/components/Profile.svelte';
 	import { onMount } from 'svelte';
 	import { filePosition, initializeFile } from '$lib/stores/desktop';
+	import Dock from './Dock.svelte';
 
   let element: HTMLElement | null = null;
   let rect = null;
@@ -29,4 +30,5 @@
     <Profile />
     <File name='test.txt' href='/playground' slot="file" />
   </DraggableWindow>
+  <Dock />
 </section>

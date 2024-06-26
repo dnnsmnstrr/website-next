@@ -91,7 +91,8 @@
         // full page content, no masking
         cursor.set({ x: innerWidth / 2, y: innerHeight / 2 });
         setMaskSize(300, 200)
-        changeRadius(innerWidth, innerWidth + 200)
+        const largestEdge = Math.max(innerWidth, innerHeight)
+        changeRadius(largestEdge, largestEdge + 200)
         break;
     }
   }
