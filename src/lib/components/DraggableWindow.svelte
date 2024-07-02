@@ -27,7 +27,6 @@
 	$: if (width || height) {
 		// switch to vertical layout on mobile
 		if (width < breakpoint && DraggableWidth > defaultWidth && !dragging) {
-			console.log(width)
 			DraggableWidth = minWidth
 			DraggableHeight = minHeight
 		} else if (width > breakpoint && DraggableWidth < defaultWidth && !dragging) {

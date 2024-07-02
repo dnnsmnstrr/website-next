@@ -11,21 +11,22 @@
   import { spring } from 'svelte/motion';
   import { tweened } from 'svelte/motion';
 	import { cubicOut } from 'svelte/easing';
+	import { browser } from '$app/environment';
 
   $: innerWidth = 0
   $: innerHeight = 0
-  console.log('w', innerWidth, window)
-  const cursor = spring({ x: window.innerWidth / 2 || 0, y: innerHeight / 2 || 0 }, {
+
+  const cursor = spring({ x: innerWidth / 2 || 0, y: innerHeight / 2 || 0 }, {
 		stiffness: 0.05,
 		damping: 0.25,
     precision: 0.5
 	});
 
-  let innerRadius = tweened($page.url.pathname !== '/' ? window.innerWidth : 200, {
+  let innerRadius = tweened(browser && $page.url.pathname !== '/' ? window?.innerWidth : 200, {
 		duration: 300,
 		easing: cubicOut
 	});
-  let outerRadius = tweened($page.url.pathname !== '/' ? window.innerWidth : 300, {
+  let outerRadius = tweened(browser && $page.url.pathname !== '/' ? window?.innerWidth : 300, {
 		duration: 300,
 		easing: cubicOut
 	});
@@ -100,8 +101,7 @@
   onMount(() => {
     if ($page.url.pathname === '/') {
       cursor.set({ x: innerWidth / 2, y: innerHeight / 3 }); // initial positioning around hero window
-    } else {
-      console.log($page.url.pathname, innerWidth)
+    } else if (browser) {
       cursor.set({ x: innerWidth / 2, y: innerHeight / 2 });
       changeRadius(innerWidth * 4, innerWidth * 4, 0)
     }
@@ -130,6 +130,7 @@
     resetColors();
     // handleMouseMove({ clientX: innerWidth / 2, clientY: -100, timeout: 0 } as MouseEvent & { timeout: number })
   }
+  $: console.log('browser', browser)
   $: {
     debugLog(`${$isCommandActive ? 'Opening' : 'Closing'} command window`)
   }
